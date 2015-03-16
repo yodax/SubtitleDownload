@@ -1,0 +1,1062 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script type="text/javascript" src="http://www.addic7ed.com/js/footer/jquery.js"></script><!-- jQuery -->
+    <script type="text/javascript" src="http://www.addic7ed.com/js/footer/footer_plugins.js"></script><!-- HoverIntent -->
+    <script type="text/javascript" src="http://www.addic7ed.com/js/footer/footer.js"></script><!-- Footer Script -->
+    <script>
+$(document).ready(function($){
+	$('#footer').stickyFooter({
+		dropup_speed_show : 300, // Time (in milliseconds) to show a drop down
+		dropup_speed_hide : 200, // Time (in milliseconds) to hide a drop down
+		dropup_speed_delay : 200, // Time (in milliseconds) before showing a drop down
+		footer_effect : 'open_close_toggle', // Drop down effect, choose between 'hover_fade', 'hover_slide', etc.
+		footer_click_outside :1, // Clicks outside the drop down close it (1 = true, 0 = false)
+		showhidefooter : 'show', // Footer can be hidden when the page loads
+		hide_speed : 1000, // Time to hide the footer (in milliseconds) if the 'showhidefooter' option is set to 'hide'
+		hide_delay : 2000 // Time before hiding the footer (in milliseconds) if the 'showhidefooter' option is set to 'hide'
+	});
+});
+    </script>
+    <script type="text/javascript">
+jQuery.noConflict();
+    </script>
+
+    <link rel="stylesheet" href="http://www.addic7ed.com/css/footer_full_width.css" type="text/css" media="screen" /><!-- Footer Stylesheet -->
+    <script src="http://gitcdn.org/libs/bitcoinate/0.2.1/index.min.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml" title="Addic7ed Search Plugin" href="/includes/addic7ed.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="The source of TV subtitles. Get your files from the source!" />
+    <title>Addic7ed.com - The source of latest TV subtitles </title>
+    <link href="http://cdn.addic7ed.com/css/wikisubtitles.css" rel="stylesheet" title="default" type="text/css" />
+    <link rel="SHORTCUT ICON" href="http://cdn.addic7ed.com/favicon.ico" />
+    <script type="text/javascript" src="http://cdn.addic7ed.com/js/mootools-core-1.4.5-full-compat.js"></script>
+    <script type="text/javascript" src="http://cdn.addic7ed.com/js/mootools-more-1.4.0.1.js"></script>
+    <script type="text/javascript">
+	function changeAppLang()
+	{
+		value = $("comboLang").value;
+		if (value!='en')
+		{
+			window.location= "/changeapplang.php?applang=" + value;
+		}
+	}
+
+	function showChange(showID)
+	{
+		if (showID==0)
+			valor = $("qsShow").value;
+		else
+			valor = showID;
+		if (valor>0)
+		{
+			$("qsSeason").innerHTML = '<img title="Please wait, loading" alt="Loading" src="http://cdn.addic7ed.com/images/loader.gif" />';
+			$("qsEp").innerHTML = '';
+			$("qssShow").innerHTML = '';
+
+			var myRequest = new Request({
+			    url: '/ajax_getSeasons.php',
+			    method: 'get',
+			    onSuccess: function(responseText){
+				$("qsSeason").innerHTML = responseText;
+			    }
+			});
+			myRequest.send('showID='+valor);
+		}
+	}
+
+	function seasonChange(showID, season)
+	{
+
+		valor = showID;
+
+		if (valor>0)
+		{
+			$("qsEp").innerHTML = '<img title="Please wait, loading" alt="Loading" src="http://cdn.addic7ed.com/images/loader.gif" />';
+
+			if (season==-1)
+				myseason = $("qsiSeason").value;
+			else
+				myseason=season;
+                       var myRequest = new Request({
+                           url: '/ajax_getEpisodes.php',
+                           method: 'get',
+                           onSuccess: function(responseText){
+                               $("qsEp").innerHTML = responseText;
+		            }
+                       });
+                       myRequest.send('showID='+valor+'&season='+myseason);
+		}
+
+	}
+
+	function changeEp()
+	{
+		var valor = $("qsiEp").value;
+		window.location = '/re_episode.php?ep=' + valor;
+	}
+
+	function qsClear()
+	{
+		$("qssShow").innerHTML = '<img title="Please wait, loading" alt="Loading" src="http://cdn.addic7ed.com/images/loader.gif" />';
+		$("qsSeason").innerHTML = '&nbsp;';
+		$("qsEp").innerHTML = '&nbsp;';
+
+		var myRequest = new Request({
+		    url: '/ajax_getShows.php',
+		    method: 'get',
+		    onSuccess: function(responseText){
+			$("qssShow").innerHTML = responseText;
+		    }
+		});
+		myRequest.send('showID='+valor);
+	}
+
+    </script>
+    <link rel="search"
+          href="http://www.addic7ed.com/opensearchdescription.xml"
+          type="application/opensearchdescription+xml"
+          title="Search Subtitles" />
+</head>
+<body>
+
+    <center>
+        <br />
+        <table border="0">
+            <tr>
+                <td rowspan="9"><a href="/"><img height="200" width="350" src="http://cdn.addic7ed.com/images/addic7edheader.jpg" border="0" title="Addic7ed.com - Quality Subtitles for TV Shows and movies" alt="Addic7ed.com - Quality Subtitles for TV Shows and movies" /></a></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">
+                    <h1>
+                        <small>Download free subtitles for TV Shows and Movies.</small>&nbsp;
+                        <select name="applang" class="inputCool" onchange="changeAppLang();" id="comboLang"><option value="ar">Arabic</option><option value="ca">Catala</option><option selected="selected" value="en">English</option><option value="eu">Euskera</option><option value="fr">French</option><option value="ga">Galician</option><option value="de">German</option><option value="gr">Greek</option><option value="hu">Hungarian</option><option value="it">Italian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="br">Portuguese (Brazilian)</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="es">Spanish</option><option value="se">Swedish</option></select>
+                    </h1>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">
+                    <div id="hBar">
+                        <ul>
+                            <li><a class="button white" href="/panel.php">My Panel</a></li>
+                            <li><a class="button white" href="/newsub.php">Upload</a></li>
+                            <li><a class="button white" href="/shows.php">Shows</a></li>
+                            <li><a class="button white" href="/allshows/a">Air dates</a></li>
+                            <li><a class="button white" href="http://www.sub-talk.net">Forum</a></li>
+                            <li><a class="button white" href="/logout.php">Logout</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <g:plusone size="medium"></g:plusone>
+                    <a href="http://twitter.com/addic7ed" target="_blank"><img width="32" height="32" src="http://cdn.addic7ed.com/images/twitter_right.png" alt="Twitter" border="0" /></a>
+                    <a href="irc://irc.efnet.net:6667/addic7ed"><img width="32" height="32" src="http://cdn.addic7ed.com/images/irc-right.png" alt="IRC" border="0" /></a>
+                    <div style="float: right; padding-right:10%;">
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan=2>
+                    <iframe src="http://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FAddic7ed&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=tahoma&amp;height=21&amp;appId=121322186712" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowtransparency="true"></iframe>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+    <center>
+
+        <!--[if lt IE 7]>
+        <style type="text/css">
+        div, img { behavior: url(http://www.addic7ed.com/js/iepngfix.htc) }
+        </style>
+        <![endif]-->
+
+
+        <div id="container70">
+            <table class="tabel" border="0" align="left">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td valign="top" class="newsDate">&nbsp;10&nbsp;days&nbsp;ago</td>
+                    <td valign="top"><img src="http://cdn.addic7ed.com/images/newspaper.png" alt="News" /></td>
+                    <td valign="top" align="left">Testing over. In other news, <a href="http://www.sub-talk.net">Sub-Talk forums are back</a>. I also added French website language to Sub-Talk, so enable it if you want. Bienvenue! :D</td>
+
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td valign="top" class="newsDate">&nbsp;11&nbsp;days&nbsp;ago</td>
+                    <td valign="top"><img src="http://cdn.addic7ed.com/images/newspaper.png" alt="News" /></td>
+                    <td valign="top" align="left">We are testing a download manager. When downloading a subtitle, you can choose to disable it by unticking the box. It only appears for unregistered users, so if you want to permanently disable it just register for an account and log in.</td>
+
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td valign="top" class="newsDate">&nbsp;27&nbsp;days&nbsp;ago</td>
+                    <td valign="top"><img src="http://cdn.addic7ed.com/images/newspaper.png" alt="News" /></td>
+                    <td valign="top" align="left">We have a lot of awesome developers in our community.<br /> If you wrote your own software (any language, as long as it's subtitles - video related) and want to share with others, or you need help in writing your own, I've created a "<a href="http://www.sub-talk.net/forum/56-developer-corner/" target="_blank">Developer Corner</a>" forum on Sub-Talk. Feel free to post.<br />Thank you for your contribution.</td>
+
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+        <br /><br />
+        <!--
+           This file is part of wikisubtitles.
+
+           wikisubtitles is free software: you can redistribute it and/or modify
+           it under the terms of the GNU General Public License as published by
+           the Free Software Foundation, either version 3 of the License, or
+           (at your option) any later version.
+
+           Wikisubtitles is distributed in the hope that it will be useful,
+           but WITHOUT ANY WARRANTY; without even the implied warranty of
+           MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+           GNU General Public License for more details.
+
+           You should have received a copy of the GNU General Public License
+           along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+        -->
+        <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="50%" align="center">
+                    <a href="javascript:qsClear();"><img width="24" height="24" title="Clear Search" alt="Clear Search Terms" src="http://cdn.addic7ed.com/images/view.png" border="0" /></a> <span id="qssShow">
+                        <b>
+                            Quick search
+                        </b>
+                        &nbsp;
+                        <script type="text/javascript">
+			window.addEvent('domready', function() { showChange(126 ); } );
+                        </script>
+
+                    </span>
+                    <span id="qsSeason">
+                        &nbsp;
+                        <script type="text/javascript">window.addEvent('domready', function() { seasonChange(126,8) } );</script>
+                    </span>
+                    &nbsp;
+                    <span id="qsEp">&nbsp;</span>
+                </td>
+                <td>
+                    <form id="form1" name="form1" method="get" action="/search.php">
+                        <div align="center">
+                            Search subtitle      &nbsp;
+                            <input name="search" type="text" id="search" size="20" /> &nbsp;
+                            <input name="Submit" type="submit" class="coolBoton" value="Search" />
+                        </div>
+                    </form>
+
+                </td>
+            </tr>
+        </table>
+
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td colspan="6" class="SectionTitle"><a href="http://www.addic7ed.com/rss.php?mode=hotspot"><img src="http://cdn.addic7ed.com/images/feed.png" width="24" height="24" border="0" /></a> &nbsp;<a href="/log.php?mode=hotspot">New Releases</a></td>
+                            </tr>
+                            <tr>
+                                <td><img alt="invisible" src="http://cdn.addic7ed.com/images/invisible.gif" /></td>
+                            </tr>
+
+
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Banana/1/8/Series_1%2C_Episode_8">Banana - 01x08 - Series 1, Episode 8</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Cucumber/1/8/Series_1%2C_Episode_8">Cucumber - 01x08 - Series 1, Episode 8</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Steven_Universe/1/48/The_Return">Steven Universe - 01x48 - The Return</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/10657">chamallow</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/10657">chamallow</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/38467">f1nc0</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Teen_Titans_Go%21/2/34/Rocks_and_Water">Teen Titans Go! - 02x34 - Rocks and Water</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/The_Slap_%28US%29/1/5/Connie">The Slap (US) - 01x05 - Connie</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Reign/2/16/Tasting_Revenge">Reign - 02x16 - Tasting Revenge</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/38467">f1nc0</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/17603">icephoenix</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/10657">chamallow</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/The_Blacklist/2/15/The_Major">The Blacklist - 02x15 - The Major</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Mom/2/17/A_Commemorative_Coin_and_a_Misshapen_Head">Mom - 02x17 - A Commemorative Coin and a Misshapen Head</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Archer/6/10/Reignition_Sequence">Archer - 06x10 - Reignition Sequence</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/17603">icephoenix</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/318255">ChrisKe</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/10641">honeybunny</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td colspan="6" class="SectionTitle"><a href="http://feeds2.feedburner.com/Addic7edLastNewVersions"><img src="http://cdn.addic7ed.com/images/feed.png" width="24" height="24" border="0" /></a> &nbsp; <a href="/log.php?mode=versions">Latest new versions</a> </td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/House_of_Cards_%282013%29/3/5/Chapter_31">House of Cards (2013) - 03x05 - Chapter 31</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Dig/1/1/Pilot">Dig - 01x01 - Pilot</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Reign/2/16/Tasting_Revenge">Reign - 02x16 - Tasting Revenge</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;Italian &middot; 1080p-NTb &middot; uploaded by <b><a class="gris" href="/user/15884">Kal-Earth2</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Italian &middot; WEB-DL &middot; uploaded by <b><a class="gris" href="/user/15884">Kal-Earth2</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Italian &middot; 2HD &middot; uploaded by <b><a class="gris" href="/user/662499">fedewop</a></b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Banana/1/8/Series_1%2C_Episode_8">Banana - 01x08 - Series 1, Episode 8</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Elementary/3/16/For_All_You_Know">Elementary - 03x16 - For All You Know</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Elementary/3/16/For_All_You_Know">Elementary - 03x16 - For All You Know</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; SNEAkY &middot; uploaded by <b><a class="gris" href="/user/10657">chamallow</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Dutch &middot; WEB-DL-Juggalotus &middot; uploaded by <b><a class="gris" href="/user/492926">BorisVictor</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Dutch &middot; DIMENSION &middot; uploaded by <b><a class="gris" href="/user/492926">BorisVictor</a></b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Red_Road/1/6/Snaring_of_the_Sun">The Red Road - 01x06 - Snaring of the Sun</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Red_Road/1/6/Snaring_of_the_Sun">The Red Road - 01x06 - Snaring of the Sun</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Red_Road/1/5/The_Great_Snake_Battle">The Red Road - 01x05 - The Great Snake Battle</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; DVDRip-x264-REWARD &middot; uploaded by <b><a class="gris" href="/user/35336">mstoll</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; DVDRip-x264-REWARD &middot; uploaded by <b><a class="gris" href="/user/35336">mstoll</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; DVDRip-x264-REWARD &middot; uploaded by <b><a class="gris" href="/user/35336">mstoll</a></b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td colspan="6" class="SectionTitle"><a href="http://feeds2.feedburner.com/Addic7edLastUploaded"><img src="http://cdn.addic7ed.com/images/feed.png" width="24" height="24" border="0" /></a> &nbsp;<a href="/log.php?mode=episodes">Latest uploaded episodes</a> </td>
+                            </tr>
+                            <tr><td><img alt="invisible" src="http://cdn.addic7ed.com/images/invisible.gif" /></td></tr>
+
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Big_Brother_%28US%29/2/19/EPISODE_19">Big Brother (US) - 02x19 - EPISODE 19</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Freakazoid%21/2/1/Five_Day_Forecast%2FThe_Dance_of_Doom%2FHandman">Freakazoid! - 02x01 - Five Day Forecast/The Dance of Doom/Handman</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Jordskott/1/4/Jordsott_Der4">Jordskott - 01x04 - Jordsott Der4</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;Spanish (Spain) &middot; uploaded by <b><a class="gris" href="/user/473392">onark</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/53438">daxdavor</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Spanish (Latin America) &middot; uploaded by <b><a class="gris" href="/user/320079">quetzal1965</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/10/Episode_10_END">Kazokugari - 01x10 - Episode 10 END</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/9/Episode_9">Kazokugari - 01x09 - Episode 9</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/8/Episode_8">Kazokugari - 01x08 - Episode 8</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/7/Episode_7">Kazokugari - 01x07 - Episode 7</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/6/Episode_6">Kazokugari - 01x06 - Episode 6</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/television.png" width="16" height="16" border="0" /> &nbsp;<a href="serie/Kazokugari/1/5/Episode_5">Kazokugari - 01x05 - Episode 5</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/458824">Vultural</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td colspan="6" class="SectionTitle"><a href="/rss.php?mode=translated"><img src="http://cdn.addic7ed.com/images/feed.png" width="24" height="24" border="0" /></a> &nbsp;<a href="/log.php?mode=translated">Latest translations completed on Addic7ed.com</a> </td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Reign/2/16/Tasting_Revenge">Reign - 02x16 - Tasting Revenge </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Empire_%282015%29/1/10/Sins_Of_The_Father">Empire (2015) - 01x10 - Sins Of The Father</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Black_Sails/2/7/XV.">Black Sails - 02x07 - XV.</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian</td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Battle_Creek/1/1/The_Battle_Creek_Way">Battle Creek - 01x01 - The Battle Creek Way </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/American_Dad/11/9/My_Affair_Lady">American Dad - 11x09 - My Affair Lady</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Vikings/3/4/Scarred">Vikings - 03x04 - Scarred</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Fortitude/1/8/Episode_8">Fortitude - 01x08 - Episode 8 </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/CSI%3A_Cyber/1/1/Kidnapping_2.0">CSI: Cyber - 01x01 - Kidnapping 2.0</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Big_Bang_Theory/8/18/The_Leftover_Thermalization">The Big Bang Theory - 08x18 - The Leftover Thermalization</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian</td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;French</td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td colspan="6" class="SectionTitle"><a href="http://feeds2.feedburner.com/Addic7edLastUploaded"><img src="http://cdn.addic7ed.com/images/feed.png" width="24" height="24" border="0" /></a>&nbsp; <a href="/log.php?mode=movies">Latest uploaded movies</a> </td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98207">The Cobbler (2015) </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98186">Image (2014)</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98175">A Most Violent Year (2014)</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/31213">Blinker</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/401283">miclar1</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Greek &middot; uploaded by <b><a class="gris" href="/user/354526">karavtz</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98148">Cardinal Richelieu (1935) </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98136">The Last Stand [Le Dernier Rempart] (2013)</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98119">When the Game Stands Tall (2014)</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;French &middot; uploaded by <b><a class="gris" href="/user/350049">SpinyNorman</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/401283">miclar1</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;English &middot; uploaded by <b><a class="gris" href="/user/656070">DBulent</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98089">Death Mills (Billy Wilder) (1945) </a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98085">Panic in the streets (1950)</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" /> &nbsp;<a href="movie/98067">Metalhead - Málmhaus (2013)</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;Spanish (Spain) &middot; uploaded by <b><a class="gris" href="/user/41267">menoyos</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Dutch &middot; uploaded by <b><a class="gris" href="/user/675028">PeeWee500</a></b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Greek &middot; uploaded by <b><a class="gris" href="/user/502278">UniqueTeam</a></b></td>
+                            </tr>
+                            <tr height="2"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="container95m">
+            <table class="tabel" border="0">
+                <tr>
+                    <!-- table header -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr><td><img src="http://cdn.addic7ed.com/images/invisible.gif" />   </td></tr>
+                            <tr><td colspan="6" class="SectionTitle">&nbsp; <a href="/log.php?mode=translated_started">Latest started translations</a></td></tr>
+                            <tr><td><img src="http://cdn.addic7ed.com/images/invisible.gif" />   </td></tr>
+
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Blacklist/2/15/The_Major">The Blacklist - 02x15 - The Major</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Simpsons/26/16/Sky_Police">The Simpsons - 26x16 - Sky Police</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Grey%27s_Anatomy/11/15/I_Feel_the_Earth_Move">Grey's Anatomy - 11x15 - I Feel the Earth Move</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;Portuguese (Brazilian) &middot; <b>0.00% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>15.42% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Portuguese (Brazilian) &middot; <b>0.10% Completed</b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Big_Bang_Theory/8/18/The_Leftover_Thermalization">The Big Bang Theory - 08x18 - The Leftover Thermalization</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Reign/2/16/Tasting_Revenge">Reign - 02x16 - Tasting Revenge</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Blacklist/2/15/The_Major">The Blacklist - 02x15 - The Major</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;Portuguese (Brazilian) &middot; <b>0.23% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>2.61% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>5.12% Completed</b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Archer/6/10/Reignition_Sequence">Archer - 06x10 - Reignition Sequence</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Fortitude/1/8/Episode_8">Fortitude - 01x08 - Episode 8</a></td>
+                                <td>&nbsp;</td>
+                                <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Blacklist/2/15/The_Major">The Blacklist - 02x15 - The Major</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                <td class="newsDate">&nbsp;&nbsp;French &middot; <b>2.63% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>11.58% Completed</b></td>
+                                <td>&nbsp;</td>
+                                <td class="newsDate">&nbsp;&nbsp;French &middot; <b>81.65% Completed</b></td>
+                            </tr>
+                            <tr height="1"> <td colspan="6"></td></tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <!-- table footer -->
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                    <td></td>
+                    <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                </tr>
+            </table>
+        </div>
+        <p>
+        <p>
+
+            <br />
+            <center>
+
+            </center>
+
+            <div id="container95m">
+                <table class="tabel" border="0">
+                    <tr>
+                        <!-- table header -->
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                        <td></td>
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                    <td colspan="6" class="SectionTitle">&nbsp;<a href="/log.php?mode=translated_finishing">Finishing translations</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Vampire_Diaries/6/15/Let_Her_Go">The Vampire Diaries - 06x15 - Let Her Go </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Major_Crimes/3/17/Internal_Affairs">Major Crimes - 03x17 - Internal Affairs</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Person_of_Interest/1/1/Pilot">Person of Interest - 01x01 - Pilot</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;Dutch &middot; <b>99.84% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Korean &middot; <b>99.77% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Indonesian &middot; <b>99.72% Completed</b></td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Arrow/3/15/Nanda_Parbat">Arrow - 03x15 - Nanda Parbat </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/DuckTales/1/41/A_Whale_Of_A_Bad_Time">DuckTales - 01x41 - A Whale Of A Bad Time</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_100/2/8/Spacewalker">The 100 - 02x08 - Spacewalker</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;Romanian &middot; <b>99.46% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>99.35% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Romanian &middot; <b>99.19% Completed</b></td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Movie Subtitle" alt="Movie Subtitle" src="http://cdn.addic7ed.com/images/film.png" width="16" height="16" border="0" />&nbsp; <a href="movie/97237">Fifty Shades of Grey (2015) </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Voice_%28UK%29/2/5/Blind_Auditions_Part_5">The Voice (UK) - 02x05 - Blind Auditions Part 5</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/What_I_Like_About_You/3/17/Dangerous_Liaisons">What I Like About You - 03x17 - Dangerous Liaisons</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;French &middot; <b>98.89% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Portuguese &middot; <b>98.10% Completed</b></td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;Bulgarian &middot; <b>97.80% Completed</b></td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                            </table>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <!-- table footer -->
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                        <td></td>
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="container95">
+                <table class="tabel" border="0">
+                    <tr>
+                        <!-- table header -->
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tl.gif" /></td>
+                        <td></td>
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/tr.gif" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table class="tabel90" width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                    <td colspan="6" class="SectionTitle"><a href="http://www.addic7ed.com/most_downloaded.php">Most downloaded today</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Big_Bang_Theory/8/18/The_Leftover_Thermalization">The Big Bang Theory - 08x18 - The Leftover Thermalization </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_Vampire_Diaries/6/16/The_Downward_Spiral">The Vampire Diaries - 06x16 - The Downward Spiral</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Vikings/3/4/Scarred">Vikings - 03x04 - Scarred</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;17994 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;15372 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;10002 Downloads</td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/The_Blacklist/2/15/The_Major">The Blacklist - 02x15 - The Major </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Grey%27s_Anatomy/11/15/I_Feel_the_Earth_Move">Grey's Anatomy - 11x15 - I Feel the Earth Move</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/The_100/2/16/Blood_Must_Have_Blood_%28Part_2%29">The 100 - 02x16 - Blood Must Have Blood (Part 2)</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;8004 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;6441 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;3443 Downloads</td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp; <a href="serie/Empire_%282015%29/1/10/Sins_Of_The_Father">Empire (2015) - 01x10 - Sins Of The Father </a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/Fortitude/1/8/Episode_8">Fortitude - 01x08 - Episode 8</a></td>
+                                    <td>&nbsp;</td>
+                                    <td class="versales"><img title="Episode Subtitle" alt="TV Series Episode Subtitle" src="http://cdn.addic7ed.com/images/television.png" with="16" height="16" border="0" />&nbsp;<a href="serie/American_Crime_%282015%29/1/2/Episode_Two">American Crime (2015) - 01x02 - Episode Two</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="http://cdn.addic7ed.com/images/linea.jpg" /></td>
+                                    <td class="newsDate">&nbsp;&nbsp;2490 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;2138 Downloads</td>
+                                    <td>&nbsp;</td>
+                                    <td class="newsDate">&nbsp;&nbsp;2074 Downloads</td>
+                                </tr>
+                                <tr height="1"> <td colspan="6"></td></tr>
+                            </table>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <!-- table footer -->
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/bl.gif" /></td>
+                        <td></td>
+                        <td class="tablecorner"><img src="http://cdn.addic7ed.com/images/br.gif" /></td>
+                    </tr>
+                </table>
+            </div><br />
+
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />&nbsp;
+            <ul id="footer">
+                <!-- BEGIN FOOTER -->
+
+
+                <li id="footer_home"><a href="http://www.addic7ed.com/"><img src="img/footer_home.png" alt="Home" /></a></li>
+
+
+                <li>
+                    <a href="#" class="dropup">Getting started</a><!-- Begin LoggedIn Menu Item -->
+
+
+                    <div class="footer_dropup drop7columns">
+                        <!-- Begin Item Container -->
+
+
+                        <div class="col_7">
+                            <h4>Welcome back, ff </h4>
+                        </div>
+
+                        <div class="clear"></div>
+                        <div class="col_2">
+
+                            <ul>
+                                <li><a href="http://www.addic7ed.com/panel.php">My Panel</a></li>
+                                <li><a href="http://www.addic7ed.com/myviews.php">Shows I watched</a></li>
+                                <li><a href="http://www.addic7ed.com/following.php">My Favorites</a></li>
+                                <li><a href="http://www.addic7ed.com/shows.php">Browse by shows</a></li>
+                                <li><a href="http://www.addic7ed.com/log.php?mode=downloaded">Most popular files</a></li>
+                                <li><a href="http://www.addic7ed.com/log.php?mode=hotspot">Latest new releases</a></li>
+                                <li><a href="http://www.addic7ed.com/log.php?mode=versions">Latest versions</a></li>
+                                <li><a href="http://www.addic7ed.com/log.php?mode=episodes">Latest episodes</a></li>
+                                <li><a href="http://www.addic7ed.com/most_downloaded.php">Most popular today</a></li>
+                                <li><a href="http://www.addic7ed.com/shows-schedule">TV Shows Schedule</a></li>
+                                <li><a href="http://www.addic7ed.com/allshows/a">TV show <b>Air Dates</b></a></li>
+                                <li><a href="http://www.addic7ed.com/latest_comments.php">Latest comments</a></li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col_4">
+
+                            <h5>What you can do now</h5>
+
+        <p class="calendar">Mark episodes as "viewed" from any subtitle page</p>
+        <p class="note">Edit or translate files online</p>
+        <p class="archive">Use the multi-download feature to download season packs - Browse a show first</p>
+        <p class="search">Search for your favorite shows and mark them as favorites (small heart icon near each version)</p>
+        <p class="help">Get help by posting comments, asking on Forums or using the contact page.</p>
+
+        </div>
+
+
+
+
+        </div><!-- End Item Container -->
+        </li><!-- End LoggedIn Menu Item -->
+
+
+        <li>
+            <a href="#" class="dropup">Your Profile</a><!-- Begin Fourth Menu Item -->
+            <div class="footer_dropup drop8columns">
+                <!-- Begin Item Container -->
+
+
+                <div class="col_8">
+                    <h4>Notifications</h4>
+                </div>
+
+                <div class="col_8">
+                    <ol class="num"><li><p class="black_box2"><a href="/msginbox.php">You have 0 unread messages!</a></p></li></ol>
+                </div>
+
+
+
+                <div class="col_8">
+                    <hr />
+                </div>
+
+                <div class="col_4">
+                    <p class="dark">Registered since <br />2013-11-27 06:45:27</p> <p class="brown">Gender <br /> Male</p> <p class="yellow">Class<br /> Regular</p> <p class="red">Last ip (show only to you and mods) <br /> 94.210.203.20</p> <p class="blue">Total created episodes <br />0</p>
+                </div>
+                <div class="col_4">
+
+                    <h4>Quick Panel</h4>
+
+                    <p>Here are some of the most important features you can find in "My Panel". If you are looking for more stuff, please visit <a href="http://www.addic7ed.com/panel.php"><b>My Panel</b></a>.</p>
+
+                    <table id="table_dark" cellspacing="0">
+                        <tr><th><a href="http://www.addic7ed.com/panel_edit_profile.php">Edit Profile</a></th><th><a href="http://www.addic7ed.com/myviews.php">Shows I've watched</a></th></tr>
+                        <tr><td><a href="http://www.addic7ed.com/msginbox.php">Inbox</a></td><td><a href="http://www.addic7ed.com/following.php">Shows I'm Following</a></td></tr>
+                        <tr><td>Donations</td><td><a href="http://www.addic7ed.com/contact.php">Contact</a></td></tr>
+                    </table>
+
+                </div>
+
+
+            </div><!-- End Item Container -->
+
+
+        </li><!-- End Fourth Item -->
+
+
+
+        <li id="social">
+            <!-- Begin Social Icons Item -->
+
+
+            <ul>
+                <!-- Social Icons -->
+                <li><a href="http://www.sub-talk.net/topic/2784-frequently-asked-questions/" class="tooltip"><img src='/img/icons/faqfooter.png' alt="FAQ" height="20" width="20" class="footer_icon" /><span>FAQ</span></a></li>
+                <!-- The span is the text appearing on hover, use the tooltip class in the link -->
+
+                <li><a href="#" class="tooltip"><img src="http://www.addic7ed.com/img/icons/msginbox.png" alt="" height="20" width="20" class="footer_icon" /><span>Inbox</span></a></li>
+                <li><a href="#" class="tooltip"><img src='/beta/img/icons/heart-black.png' alt="" height="20" width="20" class="footer_icon" /><span>Following</span></a></li>
+                <li><a href="http://www.twitter.com/addic7ed" class="tooltip"><img src='http://www.addic7ed.com/img/icons/twitter.png' alt="" class="footer_icon" /><span>Twitter</span></a></li>
+                <li><a href="http://www.addic7ed.com/rss.php?mode=hotspot" class="tooltip"><img src='http://www.addic7ed.com/img/icons/rss.png' alt="" class="footer_icon" /><span>RSS</span></a></li>
+                <li><a href="http://www.facebook.com/addic7ed" class="tooltip"><img src='http://www.addic7ed.com/img/icons/facebook.png' alt="" class="footer_icon" /><span>Facebook</span></a></li>
+
+            </ul><!-- End Social Icons -->
+
+        </li><!-- End Social Icons Item -->
+        </ul><!-- END FOOTER -->
+
+
+        <a id="footer_trigger" class="active" href="#"></a><!-- Trigger Button -->
+        <script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10775680-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+        <script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+</body>
+</html>
