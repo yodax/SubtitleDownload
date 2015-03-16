@@ -13,10 +13,7 @@
         [TestMethod]
         public void IfSrtContainsUnicodeItShouldBeStored()
         {
-            var mockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"c:\temp.txt", new MockFileData("")}
-            });
+            var mockFileSystem = new MockFileSystem();
 
             SubtitleDownloader.SaveStringToFile(mockFileSystem, @"c:\temp.srt", "Guantánamo");
 
