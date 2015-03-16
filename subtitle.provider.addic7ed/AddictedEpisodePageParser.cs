@@ -12,7 +12,7 @@
         public static EpisodePage For(string pageContent)
         {
             if (String.IsNullOrEmpty(pageContent))
-                throw new ArgumentException(@"Page is empty", "pageContent");
+                throw new EpisodePageIsEmtpyException();
 
             if (pageContent.Contains("<td valign=\"top\" class=\"newsDate\">"))
                 throw new EpisodePageNoLongerExists("Episode page no longer exists");

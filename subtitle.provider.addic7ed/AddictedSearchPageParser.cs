@@ -16,7 +16,7 @@
         public static AddictedSearchPage For(string pageContent)
         {
             if (String.IsNullOrEmpty(pageContent))
-                throw new ArgumentException(@"Page is empty", "pageContent");
+                throw new EpisodePageIsEmtpyException();
 
             var html = new HtmlDocument();
             html.LoadHtml(pageContent);

@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="AddictedWebClientHelpers.cs" />
     <Compile Include="EpisodeInfo.cs" />
+    <Compile Include="EpisodePageIsEmtpyException.cs" />
     <Compile Include="FoundLink.cs" />
     <Compile Include="FoundLinkExtensions.cs" />
     <Compile Include="LinkExtensions.cs" />

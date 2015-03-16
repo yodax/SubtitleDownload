@@ -42,7 +42,7 @@
         {
             Action act = () => AddictedSearchPageParser.For("");
 
-            act.ShouldThrow<ArgumentException>().WithMessage("Page is empty\r\nParameternaam: pageContent");
+            act.ShouldThrow<EpisodePageIsEmtpyException>().WithMessage("Page is empty");
         }
 
         [TestMethod]
