@@ -27,8 +27,10 @@
                 switches.ForEach(x => commandArguments.Remove(x));
 
                 // Initialize non test versions of classes
-                var notify = new EmailNotifier(Settings.Default.SmtpServer, Settings.Default.MailFrom,
-                    Settings.Default.MailTo);
+                //var notify = new EmailNotifier(Settings.Default.SmtpServer, Settings.Default.MailFrom,
+                //    Settings.Default.MailTo);
+                var notify = new EmailNotifier(new ConsoleLogger());
+
                 var download = new Download(Settings.Default.AddictedUsername, Settings.Default.AddictedPassword);
                 var fileSystem = new FileSystem();
 
