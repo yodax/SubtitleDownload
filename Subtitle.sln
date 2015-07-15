@@ -15,11 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubtitleDownload", "Subtitl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subtitle.Common", "Subtitle.Common\Subtitle.Common.csproj", "{2FB4F65D-FE07-4B5D-8693-0C595BAF139C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{615C5DE9-61E0-44DB-8603-F382CDA66345}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4446BDCF-1DDF-46D5-9980-CE15330AEAF5}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Global
