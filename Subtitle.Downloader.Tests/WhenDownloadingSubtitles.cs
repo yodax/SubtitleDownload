@@ -484,11 +484,13 @@
                 }
             };
 
-            var oldSubLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt";
+            //var oldSubLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt";
+            var oldSubLocation = @"/video/Anger Management/S02E43/Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt";
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
+                    //@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
+                    @"/video/Anger Management/02E43/Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
                     new MockFileData("")
                 },
                 {
@@ -497,7 +499,7 @@
                 },
             });
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = new MediaFinder(@"/video", fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -506,7 +508,8 @@
 
             subtitleDownloader.For(foundLinks);
 
-            const string srtLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            const string srtLocation = @"/video/Anger Management/S02E43/Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            //const string srtLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
