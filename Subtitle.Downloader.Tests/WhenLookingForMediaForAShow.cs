@@ -5,12 +5,12 @@
     using System.IO.Abstractions.TestingHelpers;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenLookingForMediaForAShow
     {
-        [TestMethod]
+        [Test]
         public void IfShowAndEpisodeExistReturnTheMedia()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -24,7 +24,7 @@
             foundMedia.First().Name.Should().Be("ShowName.S01E01.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfShowExistButAlsoAnNfoExistOnlyTheShowShouldBeReturned()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -39,7 +39,7 @@
             foundMedia.First().Name.Should().Be("ShowName.S01E01.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfShowExistsButEpisodeDoesNotNoMediaShouldBeFound()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -53,7 +53,7 @@
             foundMedia.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void OnlyMediaWithAProperMediaExtensionShouldBeFound()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -70,7 +70,7 @@
             foundMedia.ElementAt(1).Name.Should().Be("ShowName.S01E01.720p.HDTV-GROUP.avi");
         }
 
-        [TestMethod]
+        [Test]
         public void FullPathShouldBeAssignedCorrectly()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -88,7 +88,7 @@
                 .Be(@"c:\video\ShowName Us\S01E01\ShowName.Us.S01E01.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void OnlyMediaForTheCorrectShowShouldBeFound()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -103,7 +103,7 @@
             foundMedia.ElementAt(0).Name.Should().StartWith("ShowName");
         }
 
-        [TestMethod]
+        [Test]
         public void ShowNameShouldUseAproximateComparison()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -120,7 +120,7 @@
             foundMedia.ElementAt(1).Name.Should().Be("ShowName.Us.S01E01.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfNoMediaExistsReturnAnEmptyList()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -133,7 +133,7 @@
             foundMedia.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheRootPathIsNotFoundThrowAnException()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>());

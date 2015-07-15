@@ -1,14 +1,14 @@
 ﻿namespace Subtitle.Provider.Addic7ed.Tests
 {
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingTheWalkingDead201
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -18,13 +18,13 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("The Walking Dead");
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheEpisode()
         {
             episodePage.Episode.Should().Be(1);

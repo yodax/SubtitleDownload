@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingHawaiiFiveO
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -19,19 +19,19 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("Hawaii Five-0 (2010)");
         }
 
-        [TestMethod]
+        [Test]
         public void FirstVersionShouldBeUploadedByElderman()
         {
             episodePage.SubtitleVersions.First().Uploader.Should().Be("elderman");
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheEpisode()
         {
             episodePage.Episode.Should().Be(10);

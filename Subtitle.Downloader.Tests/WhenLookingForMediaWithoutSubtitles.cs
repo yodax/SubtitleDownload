@@ -4,12 +4,12 @@
     using System.IO.Abstractions.TestingHelpers;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenLookingForMediaWithoutSubtitles
     {
-        [TestMethod]
+        [Test]
         public void IfShowAndEpisodeExistWithoutASubReturnTheMedia()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
@@ -23,7 +23,7 @@
             foundMedia.First().Name.Should().Be("ShowName.S01E01.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfShowAndEpisodeExistWithASubReturnNothing()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>

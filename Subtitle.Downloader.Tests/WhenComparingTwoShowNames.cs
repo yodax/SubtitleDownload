@@ -1,19 +1,19 @@
 ﻿namespace Subtitle.Downloader.Tests
 {
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenComparingTwoShowNames
     {
-        [TestMethod]
+        [Test]
         public void CrimeSceneInvestigationShouldMatch()
         {
             ShouldBeApproximateMatches("CSI", "CSI: Crime Scene Investigation");
             ShouldBeApproximateMatches("CSI: Crime Scene Investigation", "CSI");
         }
 
-        [TestMethod]
+        [Test]
         public void OneMissingLetterShouldBeIgnored()
         {
             ShouldBeApproximateMatches("abce", "abcde");
@@ -24,49 +24,49 @@
 
         }
 
-        [TestMethod]
+        [Test]
         public void OneMissingLetterShouldBeIgnoredExceptIfItIsTheFirstLetter()
         {
             ShouldNotBeApproximateMatches("bcde", "abcde");
         }
 
-        [TestMethod]
+        [Test]
         public void OneLetterWordsWhichAreDifferentShouldBeIgnored()
         {
             ShouldNotBeApproximateMatches("E", "A");
         }
 
-        [TestMethod]
+        [Test]
         public void TwoCompletelyDifferentWordsShouldNotMatch()
         {
             ShouldNotBeApproximateMatches("Eajsd", "Aihasdoihoi");
         }
 
-        [TestMethod]
+        [Test]
         public void NumbersShouldBeIgnored()
         {
             ShouldBeApproximateMatches("Castle", "Castle 2009");
         }
 
-        [TestMethod]
+        [Test]
         public void CaseShouldBeIgnored()
         {
             ShouldBeApproximateMatches("Castle", "cASTLE");
         }
 
-        [TestMethod]
+        [Test]
         public void SpacesShouldBeIgnored()
         {
             ShouldBeApproximateMatches("castle", " c a s t l e ");
         }
 
-        [TestMethod]
+        [Test]
         public void PunctuationShouldBeIgnored()
         {
             ShouldBeApproximateMatches("Marvel_Agents-of S.H.I.E.L.D", "Marvel Agents of SHIELD");
         }
 
-        [TestMethod]
+        [Test]
         public void TheWordAndShouldBeIgnored()
         {
             ShouldBeApproximateMatches("Dumbo and Dumbo", "Dumbo & Dumbo");
@@ -74,7 +74,7 @@
 
         }
 
-        [TestMethod]
+        [Test]
         public void TheWordUsShouldBeIgnored()
         {
             ShouldBeApproximateMatches("Dumbo US", "Dumbo");

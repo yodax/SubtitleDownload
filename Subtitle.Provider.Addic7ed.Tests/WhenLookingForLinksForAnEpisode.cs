@@ -4,13 +4,13 @@
     using System.Linq;
     using Common;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using NSubstitute;
 
-    [TestClass]
+    [TestFixture]
     public class WhenLookingForLinksForAnEpisode
     {
-        [TestMethod]
+        [Test]
         public void IfLinksAreFoundTheyShouldBeAddedToFoundLinks()
         {
             var foundLinks = new List<FoundLink>
@@ -38,7 +38,7 @@
             foundLinks.ElementAt(1).ShowName.Should().Be("Brickleberry");
         }
 
-        [TestMethod]
+        [Test]
         public void IfADirectLinkIsFoundItIsAddedToFoundLinks()
         {
             var foundLinks = new List<FoundLink>();

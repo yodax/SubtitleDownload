@@ -4,14 +4,14 @@
     using System.IO.Abstractions;
     using Common;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using NSubstitute;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenStartingASession
     {
-        [TestMethod]
+        [Test]
         public void IfCheckCommandIsIssuedLookForLinksShouldBeCalled()
         {
             var download = Substitute.For<IDownload>();
@@ -42,7 +42,7 @@
             download.Received().From(Arg.Is("Link a"), Arg.Any<string>());
         }
 
-        [TestMethod]
+        [Test]
         public void IfSearchCommandIsIssuedLookForLinksFromShowShouldBeCalled()
         {
             var resourceDownloader = new ResourceDownload();
@@ -75,7 +75,7 @@
             foundLinks.Count.Should().Be(23);
         }
 
-        [TestMethod]
+        [Test]
         public void IfSearchCommandIsIssuedForASpecificEpisodeLookForLinksFromEpisodeShouldBeCalled()
         {
             var resourceDownloader = new ResourceDownload();
@@ -109,7 +109,7 @@
             foundLinks.Count.Should().Be(1);
         }
 
-        [TestMethod]
+        [Test]
         public void IfDownloadCommandIsIssuedCheckShouldAlsoBeDone()
         {
             var download = Substitute.For<IDownload>();
@@ -140,7 +140,7 @@
             download.Received().From(Arg.Is("Link a"), Arg.Any<string>());
         }
 
-        [TestMethod]
+        [Test]
         public void IfDownloadCommandIsIssuedFeedLinkShouldBeRetrieved()
         {
             var download = Substitute.For<IDownload>();

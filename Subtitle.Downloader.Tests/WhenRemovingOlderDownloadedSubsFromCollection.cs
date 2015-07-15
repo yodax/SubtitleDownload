@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Subtitle.Downloader.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class WhenRemovingOlderDownloadedSubsFromCollection
     {
         private readonly DateTime twentyNineDaysAgo = DateTime.Now.AddDays(-29);
         private readonly DateTime thirtyOneDaysAgo = DateTime.Now.AddDays(-31);
 
-        [TestMethod]
+        [Test]
         public void IfTheDownloadedSubsContainNoOlderDownloadsNothingShouldBePurged()
         {
             var downloadedSubs = new List<DownloadedSub>
@@ -26,7 +26,7 @@ namespace Subtitle.Downloader.Tests
             downloadedSubs.RemoveOlderThan(30).Should().HaveCount(1);
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheDownloadedSubsContainsOlderDownloadsThanTheyShouldBePurged()
         {
             var downloadedSubs = new List<DownloadedSub>
@@ -40,7 +40,7 @@ namespace Subtitle.Downloader.Tests
             downloadedSubs.RemoveOlderThan(30).Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheDownloadedSubsContainBothOlderAndNewerDownloadsItShouldContainOnlyNewerDownloads()
         {
             var downloadedSubs = new List<DownloadedSub>

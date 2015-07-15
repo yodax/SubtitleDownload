@@ -2,13 +2,13 @@
 {
     using System.Collections.Generic;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenLookingForTheBestSubtitleVersion
     {
-        [TestMethod]
+        [Test]
         public void IfOneVersionPresentAndItMatchesReturnThatDownloadLink()
         {
             var versions = new List<SubtitleVersion>
@@ -38,7 +38,7 @@
             foundLink.Link.Link.Should().Be("Found Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfAVersionIsFoundPassTheLanguageInTheResult()
         {
             var versions = new List<SubtitleVersion>
@@ -68,7 +68,7 @@
             foundLink.Subtitle.Language.Should().Be("English");
         }
 
-        [TestMethod]
+        [Test]
         public void OnlyCompleteSubtitlesShouldBeDownloaded()
         {
             var versions = new List<SubtitleVersion>
@@ -98,7 +98,7 @@
             foundLink.Should().BeNull();
         }
 
-        [TestMethod]
+        [Test]
         public void OnlyEnglishOrDutchSubtitlesShouldBeDownloaded()
         {
             var versions = new List<SubtitleVersion>
@@ -128,7 +128,7 @@
             foundLink.Should().BeNull();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTwoVersionsPresentAndTheyBothMatchDownloadTheMostUpdatedOne()
         {
             var versions = new List<SubtitleVersion>
@@ -174,7 +174,7 @@
             foundLink.Link.Link.Should().Be("Found Updated Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTwoVersionsPresentAndTheyBothMatchDownloadTheMostDownloaded()
         {
             var versions = new List<SubtitleVersion>
@@ -222,7 +222,7 @@
             foundLink.Link.Link.Should().Be("Found Most Downloaded Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTwoVersionsPresentAndTheyBothMatchDownloadTheNonHearingImpairedVersion()
         {
             var versions = new List<SubtitleVersion>
@@ -274,7 +274,7 @@
             foundLink.Link.Link.Should().Be("Found Non Hearing Impaired Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTwoVersionsPresentOneEnglishAndOnDutchDownloadOnlyDutch()
         {
             var versions = new List<SubtitleVersion>
@@ -320,7 +320,7 @@
             foundLink.Link.Link.Should().Be("Found Dutch Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTwoVersionsPresentOneEnglishAndOenDutchDownloadBasedOnOrder()
         {
             var versions = new List<SubtitleVersion>
@@ -366,7 +366,7 @@
             foundLink.Link.Link.Should().Be("Found German Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfOneVersionPresentWithTwoLinksReturnMostUpdatedLink()
         {
             var versions = new List<SubtitleVersion>
@@ -405,7 +405,7 @@
             foundLink.Link.Link.Should().Be("Found Updated Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfOneVersionPresentWithBothEnglishAndDutchSubtitleReturnDutchLink()
         {
             var versions = new List<SubtitleVersion>
@@ -443,7 +443,7 @@
             foundLink.Link.Link.Should().Be("Found Dutch Link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfOneVersionIsPresentButTheReleaseDoesntMatchReturnAnEmptyString()
         {
             var versions = new List<SubtitleVersion>

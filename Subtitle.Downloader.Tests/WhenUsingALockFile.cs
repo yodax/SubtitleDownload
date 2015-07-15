@@ -1,18 +1,14 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System.Collections.Generic;
-    using System.IO.Abstractions.TestingHelpers;
-    using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using System.IO.Abstractions.TestingHelpers;
+using FluentAssertions;
+using NUnit.Framework;
 
-    [TestClass]
+namespace Subtitle.Downloader.Tests
+{
+    [TestFixture]
     public class WhenUsingALockFile
     {
-        private bool aquiredLock;
-        private MockFileSystem fileSystem;
-        private Lock lockFile;
-
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             GivenAnEmptyFileSystem();
@@ -20,55 +16,9 @@
             GivenALockingMechanism();
         }
 
-        [TestMethod]
-        public void IfNoLockFileExistsALockShouldBeAquired()
-        {
-            WhenIAquireALock();
-
-            ALockShouldBeSet();
-        }
-
-        [TestMethod]
-        public void IfNoLockFileExistsAFileShouldBeCreated()
-        {
-            WhenIAquireALock();
-
-            ALockFileShouldBePresentOnTheFileSystem();
-        }
-
-        [TestMethod]
-        public void IfALockFileExistsNoLockShouldBeAquired()
-        {
-            GivenAFileSystemWithALockPresent();
-
-            GivenALockingMechanism();
-
-            WhenIAquireALock();
-
-            ALockShouldNotBeSet();
-        }
-
-        [TestMethod]
-        public void TwoConsecutiveAquiresShouldFail()
-        {
-            WhenIAquireALock();
-
-            WhenIAquireALock();
-
-            ALockShouldNotBeSet();
-        }
-
-        [TestMethod]
-        public void IfALockIsReleasedALockShouldBeAvailable()
-        {
-            WhenIAquireALock();
-
-            WhenIReleaseALock();
-
-            WhenIAquireALock();
-
-            ALockFileShouldBePresentOnTheFileSystem();
-        }
+        private bool aquiredLock;
+        private MockFileSystem fileSystem;
+        private Lock lockFile;
 
         private void GivenAFileSystemWithALockPresent()
         {
@@ -111,6 +61,56 @@
         private void GivenAnEmptyFileSystem()
         {
             fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>(), @"c:\downloadTool\");
+        }
+
+        [Test]
+        public void IfALockFileExistsNoLockShouldBeAquired()
+        {
+            GivenAFileSystemWithALockPresent();
+
+            GivenALockingMechanism();
+
+            WhenIAquireALock();
+
+            ALockShouldNotBeSet();
+        }
+
+        [Test]
+        public void IfALockIsReleasedALockShouldBeAvailable()
+        {
+            WhenIAquireALock();
+
+            WhenIReleaseALock();
+
+            WhenIAquireALock();
+
+            ALockFileShouldBePresentOnTheFileSystem();
+        }
+
+        [Test]
+        public void IfNoLockFileExistsAFileShouldBeCreated()
+        {
+            WhenIAquireALock();
+
+            ALockFileShouldBePresentOnTheFileSystem();
+        }
+
+        [Test]
+        public void IfNoLockFileExistsALockShouldBeAquired()
+        {
+            WhenIAquireALock();
+
+            ALockShouldBeSet();
+        }
+
+        [Test]
+        public void TwoConsecutiveAquiresShouldFail()
+        {
+            WhenIAquireALock();
+
+            WhenIAquireALock();
+
+            ALockShouldNotBeSet();
         }
     }
 }

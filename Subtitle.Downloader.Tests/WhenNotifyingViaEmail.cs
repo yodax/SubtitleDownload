@@ -2,24 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using NSubstitute;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenNotifyingViaEmail
     {
         private IMailer mailMock;
         private EmailNotifier notifier;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             mailMock = Substitute.For<IMailer>();
             notifier = new EmailNotifier(mailMock);
         }
 
-        [TestMethod]
+        [Test]
         public void IfDownloadCountWasExceeded()
         {
             notifier.ForDownloadCountExceeded();
@@ -28,7 +28,7 @@
                 "Download count exceeded for addic7ed. Please get a VIP subscription.");
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleWasDownloadedAgeShouldBeInHours()
         {
             var link = new SubtitleLink
@@ -76,7 +76,7 @@
             MailShouldHaveBeenSendWith("Dutch Sub: ShowName S01E01", body);
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleWasDownloadedWithAge1Day()
         {
             var link = new SubtitleLink
@@ -123,7 +123,7 @@
             MailShouldHaveBeenSendWith("Dutch Sub: ShowName S01E01", body);
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleWasDownloadedWithAge2Days()
         {
             var link = new SubtitleLink

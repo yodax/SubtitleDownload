@@ -2,9 +2,9 @@
 {
     using System;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenCheckingIfWeNeedToRunCheckSession
     {
         private TimeSpan FifteenMinutes
@@ -21,19 +21,19 @@
             get { return DateTime.Now.AddMinutes(-20); }
         }
 
-        [TestMethod]
+        [Test]
         public void OneMinuteHasPassedWeShouldNotRun()
         {
             TimeCheck.ForInterval(FifteenMinutes, OneMinuteAgo).Should().BeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void TwentyMinutesHavePassedWeShouldRun()
         {
             TimeCheck.ForInterval(FifteenMinutes, TwentyMinutesAgo).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void LastRunTimeIsBeforeScheduleCurrentTimeIsAfter()
         {
             var currentTime = TimeCheck.TodayAt(19, 00);
@@ -43,7 +43,7 @@
                 .Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void CurrentTimeIsBeforeScheduleWeShouldNotRun()
         {
             var currentTime = TimeCheck.TodayAt(17, 30);

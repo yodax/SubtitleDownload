@@ -2,12 +2,12 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenExtractingLinksFromAddictedFeeds
     {
-        [TestMethod]
+        [Test]
         public void IfTheFeedHasErrors()
         {
             var feedContentReader = ResourceManager.GetInputFile("FaultyRss.xml");
@@ -20,7 +20,7 @@
             //links.ElementAt(14).Should().Be("http://www.addic7ed.com/serie/Brooklyn_Nine-Nine/1/11/Christmas1");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheFeedIsLastNewVersionAllLinksShouldBeExtracted()
         {
             var feedContentReader = ResourceManager.GetInputFile("Addic7edLastNewVersions.xml");
@@ -33,7 +33,7 @@
             links.ElementAt(14).Should().Be("http://www.addic7ed.com/serie/Brooklyn_Nine-Nine/1/11/Christmas1");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheFeedIsLastUploadedAllLinksShouldBeExtracted()
         {
             var feedContentReader = ResourceManager.GetInputFile("Addic7edLastUploaded.xml");
@@ -46,7 +46,7 @@
             links.ElementAt(14).Should().Be("http://www.addic7ed.com/serie/The_Blacklist/1/10/Anslo_Garrick,_Part_2");
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheFeedIsHotspotAllLinksShouldBeExtracted()
         {
             var feedContentReader = ResourceManager.GetInputFile("AddictedHotspot.xml");

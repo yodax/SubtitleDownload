@@ -2,12 +2,12 @@
 {
     using System;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingASubtitlePageButYouGetAnIndex
     {
-        [TestMethod]
+        [Test]
         public void ShouldThrowAnEpisodePageNoLongerExists()
         {
             var reader =

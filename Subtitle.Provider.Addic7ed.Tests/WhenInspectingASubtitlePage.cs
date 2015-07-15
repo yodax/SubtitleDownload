@@ -2,14 +2,14 @@
 {
     using System;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingASubtitlePage
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader = ResourceManager.GetInputFile("The Walking Dead - 04x08 - Too Far Gone.html");
@@ -18,13 +18,13 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void EpisodeSeasonShouldBeS04E08()
         {
             episodePage.SeasonEpisode.Should().Be("S04E08");
         }
 
-        [TestMethod]
+        [Test]
         public void IfThePageHasNoContentAnExceptionShouldBeThrown()
         {
             Action act = () => AddictedEpisodePageParser.For("");
@@ -32,7 +32,7 @@
             act.ShouldThrow<EpisodePageIsEmtpyException>().WithMessage("Page is empty");
         }
 
-        [TestMethod]
+        [Test]
         public void IfThePageHasNoTitleAnExceptionShouldBeThrown()
         {
             Action act = () => AddictedEpisodePageParser.For("<html><body></body></html>");

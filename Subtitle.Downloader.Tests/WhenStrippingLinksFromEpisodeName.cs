@@ -1,13 +1,13 @@
 ﻿namespace Subtitle.Downloader.Tests
 {
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenStrippingLinksFromEpisodeName
     {
-        [TestMethod]
+        [Test]
         public void TheEpisodeShouldBeStripped()
         {
             @"http://www.addic7ed.com/serie/Anger_Management/2/43/Charlie_Loses_His_Virginity_Again"

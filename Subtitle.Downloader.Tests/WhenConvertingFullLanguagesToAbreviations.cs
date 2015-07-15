@@ -1,20 +1,20 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 
 
 namespace Subtitle.Downloader.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class WhenConvertingFullLanguagesToAbreviations
     {
-        [TestMethod]
+        [Test]
         public void DutchShouldBeConvertedToNl()
         {
             "Dutch".ToShortLanguage().Should().Be("nl");
         }
 
-        [TestMethod]
+        [Test]
         public void EnglishShouldBeConvertedToEn()
         {
             "English".ToShortLanguage().Should().Be("en");

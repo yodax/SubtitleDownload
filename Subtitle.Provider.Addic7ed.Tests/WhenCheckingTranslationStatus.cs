@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenCheckingTranslationStatus
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -20,13 +20,13 @@
         }
 
 
-        [TestMethod]
+        [Test]
         public void EnglishShouldBeCompleted()
         {
             episodePage.SubtitleVersions.First().Subtitles.First().Completed.Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void PortugueseShouldNotBeCompleted()
         {
             var portugueseVersion = episodePage.SubtitleVersions.First()

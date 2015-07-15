@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingCsi
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -19,20 +19,20 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("CSI: Crime Scene Investigation");
         }
 
-        [TestMethod]
+        [Test]
         public void FirstVersionShouldBeUploadedByElderman()
         {
             episodePage.SubtitleVersions.First().Uploader.Should().Be("elderman");
             episodePage.SubtitleVersions.Should().HaveCount(4);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheEpisode()
         {
             episodePage.Episode.Should().Be(9);

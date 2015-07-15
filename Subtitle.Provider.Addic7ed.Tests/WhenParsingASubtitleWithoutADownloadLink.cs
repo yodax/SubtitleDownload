@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenParsingASubtitleWithoutADownloadLink
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -19,13 +19,13 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("Supernatural");
         }
 
-        [TestMethod]
+        [Test]
         public void TheSecondToLastVersionShouldHaveNoSubtitles()
         {
             episodePage.SubtitleVersions.Should().HaveCount(13);

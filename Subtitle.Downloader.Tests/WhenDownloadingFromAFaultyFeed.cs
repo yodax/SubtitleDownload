@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Subtitle.Downloader.Tests
 {
@@ -7,10 +7,10 @@ namespace Subtitle.Downloader.Tests
     using FluentAssertions;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenDownloadingFromAFaultyFeed
     {
-        [TestMethod]
+        [Test]
         public void TheFaultyItemShouldBeIgnored()
         {
             var foundLinks = new List<FoundLink>();

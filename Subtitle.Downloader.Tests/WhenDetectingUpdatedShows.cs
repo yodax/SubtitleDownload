@@ -4,17 +4,17 @@
     using System.Collections.Generic;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenDetectingUpdatedShows
     {
         private List<string> feedLinks;
         private List<FoundLink> foundLinks;
         private LinkFinder linkFinder;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             GivenNoFoundLinks();
@@ -22,7 +22,7 @@
             GivenALinkFinder();
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinkWasAlreadyPresentAndItWasFoundAgainItShouldNotBeAdded()
         {
             GivenTheFoundLink("http://www.addic7ed.com/serie/South_Park/17/8/A_Song_of_Ass_and_Fire7");
@@ -32,7 +32,7 @@
             foundLinks.Count.Should().Be(10);
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinkWasAlreadyPresentAndItWasFoundAgainItShouldNotBeAddedButTheMostRecentTimeShouldBeUsed()
         {
             const string link = "http://www.addic7ed.com/serie/South_Park/17/8/A_Song_of_Ass_and_Fire";
@@ -46,7 +46,7 @@
             foundLinks.First(l => l.Link.StartsWith(link)).FoundOn.Should().Be(foundOn);
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinkWasAlreadyPresentItShouldStillBeAvailable()
         {
             GivenTheFoundLink("http://www.addic7ed.com/serie/Non_existing_show/17/8/A");
@@ -56,7 +56,7 @@
             foundLinks.Count.Should().Be(11);
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinkWasAlreadyPresentWithADifferentEpisodeNameAndItWasFoundAgainItShouldNotBeAdded()
         {
             GivenTheFoundLink("http://www.addic7ed.com/serie/South_Park/17/8/A_Song_of_Ass_and_Fire117");
@@ -66,7 +66,7 @@
             foundLinks.Count.Should().Be(10);
         }
 
-        [TestMethod]
+        [Test]
         public void IfAnEpisodeLinkIsFoundItShouldBeStored()
         {
             feedLinks.RemoveRange(1, 2);
@@ -76,7 +76,7 @@
             foundLinks.Count.Should().Be(7);
         }
 
-        [TestMethod]
+        [Test]
         public void IfAnEpisodeLinkIsFoundMutipleTimesItShouldOnlyBeStoredOnce()
         {
             WhenILookForLinks();
@@ -84,7 +84,7 @@
             foundLinks.Count.Should().Be(10);
         }
 
-        [TestMethod]
+        [Test]
         public void TheShowNameAndTheEpisodeShouldBeStored()
         {
             WhenILookForLinks();

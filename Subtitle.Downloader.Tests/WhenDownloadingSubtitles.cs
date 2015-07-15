@@ -6,14 +6,14 @@
     using System.Linq;
     using Common;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using NSubstitute;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenDownloadingSubtitles
     {
-        [TestMethod]
+        [Test]
         public void IfAFoundLinkWasFromASearchUrlDownloadTheSubtitle()
         {
             var foundLinks = new List<FoundLink>
@@ -61,7 +61,7 @@
             fileSystem.File.ReadAllText(srtLocation).TrimEnd().Equals("Sub text", StringComparison.InvariantCulture).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleIsDownloadedALanguageSuffixShouldBeAdded()
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"Dutch", "English"});
@@ -73,7 +73,7 @@
             fileSystem.File.ReadAllText(srtLocation).TrimEnd().Equals("Sub text", StringComparison.InvariantCulture).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleIsDownloadedAnEnglishLanguageSuffixShouldBeAdded()
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"English"});
@@ -85,7 +85,7 @@
             fileSystem.File.ReadAllText(srtLocation).TrimEnd().Equals("Sub text", StringComparison.InvariantCulture).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfAFoundLinkHasMatchingMediaDownloadTheSubtitle()
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"Dutch", "English"});
@@ -139,7 +139,7 @@
             return fileSystem;
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinksShowNameDoesNotHaveMatchingMediaDoNotDownloadPage()
         {
             var foundLinks = new List<FoundLink>
@@ -174,7 +174,7 @@
             download.DidNotReceive().From(Arg.Any<string>(), Arg.Any<string>());
         }
 
-        [TestMethod]
+        [Test]
         public void IfALinkIsDownloadedANotificationShouldBeSent()
         {
             var foundLinks = new List<FoundLink>
@@ -214,7 +214,7 @@
                     Arg.Is(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt"), Arg.Any<string>());
         }
 
-        [TestMethod]
+        [Test]
         public void IfNoMatchingSubtitleWasFoundNothingShouldBeDownloaded()
         {
             var foundLinks = new List<FoundLink>
@@ -254,7 +254,7 @@
                 .ForException(Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<EpisodePage>(), Arg.Any<Subtitle>(), Arg.Any<SubtitleLink>());
         }
 
-        [TestMethod]
+        [Test]
         public void WhenAnExceptionIsThrowDuringPageExtractionANotificationShouldBeSent()
         {
             var foundLinks = new List<FoundLink>
@@ -296,7 +296,7 @@
             foundLinks.Count.Should().Be(0);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenAnEpisodePageNoLongerExistsANotificationShouldBeSent()
         {
             var foundLinks = new List<FoundLink>
@@ -338,7 +338,7 @@
             foundLinks.Count.Should().Be(0);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenDownloadingPassPageAsReferer()
         {
             var foundLinks = new List<FoundLink>
@@ -389,7 +389,7 @@
             return mockDownloader;
         }
 
-        [TestMethod]
+        [Test]
         public void WhenAnExceptionIsThrowDuringDownloadANotificationShouldBeSent()
         {
             var foundLinks = new List<FoundLink>
@@ -434,7 +434,7 @@
                     Arg.Any<Subtitle>(), Arg.Any<SubtitleLink>());
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleExistsOverwriteIt()
         {
             var foundLinks = new List<FoundLink>
@@ -473,7 +473,7 @@
             fileSystem.File.ReadAllText(srtLocation).TrimEnd().Equals("Sub text", StringComparison.InvariantCulture).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfADifferentLanguageSubtitleExistsLeaveIt()
         {
             var foundLinks = new List<FoundLink>
@@ -518,7 +518,7 @@
             fileSystem.File.ReadAllText(oldSubLocation).TrimEnd().Equals("Old sub!", StringComparison.InvariantCulture).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleIsDownloadedItShouldBeAddedToTheFoundLinks()
         {
             var foundLinks = new List<FoundLink>
@@ -553,7 +553,7 @@
             previouslyDownloadedSubs.ElementAt(0).For.Should().Be(mediaLocation);
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleHasAlreadyBeenDownloadedDontDownloadAgain()
         {
             var fileSystem = CheckForDownloadWithSubAlreadyDownloaded(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv");
@@ -563,7 +563,7 @@
                 .Should().BeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleHasAlreadyBeenDownloadedButItIsUnknownForWhichMediaDontDownloadAgain()
         {
             var fileSystem = CheckForDownloadWithSubAlreadyDownloaded(string.Empty);
@@ -573,7 +573,7 @@
                 .Should().BeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void IfASubtitleHasAlreadyBeenDownloadedButItIsForDifferentMediaDownloadAgain()
         {
             var fileSystem = CheckForDownloadWithSubAlreadyDownloaded(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-BOINK.mkv");
@@ -624,7 +624,7 @@
             return fileSystem;
         }
 
-        [TestMethod]
+        [Test]
         public void AfterDownloadingCompletesFoundLinksShouldBeCleared()
         {
             var foundLinks = new List<FoundLink>
@@ -654,7 +654,7 @@
             foundLinks.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheOldestAgeIsLargerThanSpecifiedButAgeShouldBeIgnoredDownloadSub()
         {
             var foundLinks = new List<FoundLink>
@@ -690,7 +690,7 @@
             foundLinks.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheOldestAgeIsLargerThanSpecifiedDontDownloadEvenWhenNewerVersionsArePresent()
         {
             var foundLinks = new List<FoundLink>
@@ -725,7 +725,7 @@
             foundLinks.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheOldestIsSpecifiedAtMinusOneIgnoreTheParameter()
         {
             var foundLinks = new List<FoundLink>
@@ -758,7 +758,7 @@
             previouslyDownloadedSubs.Count.Should().Be(1);
         }
 
-        [TestMethod]
+        [Test]
         public void IfDownloadCountExceededAfterDownloadingCompletesFoundLinksShouldContainMissedDownloads()
         {
             var foundLinks = new List<FoundLink>

@@ -1,9 +1,9 @@
 ﻿namespace Subtitle.Downloader.Tests
 {
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenCheckingForAMatchingSubtitle
     {
         /*LOL & SYS always work with 720p DIMENSION;	
@@ -13,7 +13,7 @@
          * BiA always works with 720p BiA; 
          * FoV always works with 720p FoV*/
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupIsEither2HdOrBiaOrFovThenMatchIgnoringResolution()
         {
             CheckWithDifferentResolutionsThatShouldMatch("2HD");
@@ -21,7 +21,7 @@
             CheckWithDifferentResolutionsThatShouldMatch("FOV");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupIsEither2HdOrBiaOrFovThenOnlyMatchIfGroupIsInRelease()
         {
             CheckMatch.For("Blaat.S01E02.720p.HDTV-2HD.mkv", "HDTV-IMMERSE").Should().BeFalse();
@@ -34,7 +34,7 @@
             CheckMatch.For(episode, subtitle).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupIsInterchangeAbleItShouldMatch()
         {
             CheckForInterChangeableGroups(new[]
@@ -71,7 +71,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IfGroupIsKillersWithoutExtensionAndSourceIsOtherTheDontMatch()
         {
             SubtitleShouldNotMatchWithRelease("OTHER", "ShowName.S01E02.720p.HDTV-KILLERS");
@@ -87,74 +87,74 @@
             CheckMatch.For(releaseDescription, subtitleInformation).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupMatchesButNotResolutionThenDontMatch()
         {
             SubtitleShouldNotMatchWithRelease("480p.HDTV-GROUP", "Blaat.S01E02.720p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupAndResolution720MatchesThenFindMatch()
         {
             SubtitleShouldMatchWithRelease("720p.HDTV-IMMERSE", "Blaat.S01E02.720p.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupAndResolution1080MatchesThenFindMatch()
         {
             SubtitleShouldMatchWithRelease("1080p.HDTV-IMMERSE", "Blaat.S01E02.1080p.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupAndResolution480MatchesThenFindMatch()
         {
             SubtitleShouldMatchWithRelease("480p.HDTV-IMMERSE", "Blaat.S01E02.480p.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupAndResolutionHdtvMatchesThenFindMatch()
         {
             SubtitleShouldMatchWithRelease("HDTV-IMMERSE", "Blaat.S01E02.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupMatchesButResolutionDoesntThenDontMatch()
         {
             SubtitleShouldNotMatchWithRelease("720p.HDTV-GROUP", "Blaat.S01E02.480p.HDTV-GROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfSourceGroupMatchesButResolutionIsNotFoundThenMatch()
         {
             SubtitleShouldMatchWithRelease("IMMERSE", "Blaat.S01E02.720p.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfGroupContainsWebAndReleaseContainsWebThenMatch()
         {
             SubtitleShouldMatchWithRelease("WEB-DL", "Blaat.S01E02.WEB-DL-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfGroupContainsWebAndRipAndReleaseContainsWebThenMatch()
         {
             SubtitleShouldMatchWithRelease("WEB", "Blaat.S01E02.WEBRip-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfGroupsDontMatchDontMatchRelease()
         {
             SubtitleShouldNotMatchWithRelease("GROUP", "Blaat.S01E02.720p.HDTV-OTHERGROUP.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfReleaseContainsExtraGroupsTheyShouldMatch()
         {
             CheckMatch.For("Blaat.S01E02.720p.HDTV-IMMERSE.mkv", "ASAP works with IMMERSE").Should().BeTrue();
             SubtitleShouldMatchWithRelease("ASAP works with IMMERSE", "Blaat.S01E02.720p.HDTV-IMMERSE.mkv");
         }
 
-        [TestMethod]
+        [Test]
         public void IfReleaseContainsMultipleResolutionsAndThatIsContainedInTheReleaseTheyShouldMatch()
         {
             SubtitleShouldMatchWithRelease("ASAP works with IMMERSE 480p 720p", "Blaat.S01E02.720p.HDTV-IMMERSE.mkv");

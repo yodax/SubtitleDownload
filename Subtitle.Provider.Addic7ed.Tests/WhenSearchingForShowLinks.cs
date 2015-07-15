@@ -3,12 +3,12 @@
     using System;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenSearchingForShowLinks
     {
-        [TestMethod]
+        [Test]
         public void FindAllLinksForShow()
         {
             var pageContent = ResourceManager.GetInputFile("Search_Brickleberry.html").ReadToEnd();
@@ -18,7 +18,7 @@
             searchPage.FoundLinks.Count().Should().Be(23);
         }
 
-        [TestMethod]
+        [Test]
         public void FindEpisodeInformationCorrectlty()
         {
             var pageContent = ResourceManager.GetInputFile("Search_Brickleberry.html").ReadToEnd();
@@ -37,7 +37,7 @@
             lastShow.Link.Should().Be("http://www.addic7ed.com/serie/Brickleberry/2/13/A-Park-a-Lypse");
         }
 
-        [TestMethod]
+        [Test]
         public void IfThePageHasNoContentAnExceptionShouldBeThrown()
         {
             Action act = () => AddictedSearchPageParser.For("");
@@ -45,7 +45,7 @@
             act.ShouldThrow<EpisodePageIsEmtpyException>().WithMessage("Page is empty");
         }
 
-        [TestMethod]
+        [Test]
         public void ConstructPropperSearchUrl()
         {
             var url = "Showname With Spaces".ToSearchUrl();

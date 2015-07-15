@@ -5,13 +5,13 @@
     using System.IO.Abstractions.TestingHelpers;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Provider.Addic7ed;
 
-    [TestClass]
+    [TestFixture]
     public class WhenPersistingLists
     {
-        [TestMethod]
+        [Test]
         public void IfFoundLinksContainsOneItemOneItemShouldBeStored()
         {
             var dateTime = DateTime.Now;
@@ -31,7 +31,7 @@
             newFoundLinks.ElementAt(0).Link.Should().Be("Stored link");
         }
 
-        [TestMethod]
+        [Test]
         public void IfFoundLinksContainsNoItemsNoItemsShouldBeStored()
         {
             var foundLinks = new List<FoundLink>();
@@ -46,7 +46,7 @@
             newFoundLinks.Count().Should().Be(0);
         }
 
-        [TestMethod]
+        [Test]
         public void IfTheStoreWasAlreadyPersistedItShouldPersistAgain()
         {
             var dateTime = DateTime.Now;
@@ -75,7 +75,7 @@
             }, @"c:\downloadTool\");
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldWorkForDownloadedSub()
         {
             var downloadedSubs = new List<DownloadedSub>
@@ -92,7 +92,7 @@
             downloadedSubs.Count.Should().Be(1);
         }
 
-        [TestMethod]
+        [Test]
         public void IfStoreIsNotThereYetAnEmptyListShouldBeReturned()
         {
             var downloadedSubs = new List<DownloadedSub>();

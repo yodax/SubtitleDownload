@@ -5,12 +5,12 @@
     using System.IO.Abstractions.TestingHelpers;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenStoringSubtitle
     {
-        [TestMethod]
+        [Test]
         public void IfSrtContainsUnicodeItShouldBeStored()
         {
             var mockFileSystem = new MockFileSystem();

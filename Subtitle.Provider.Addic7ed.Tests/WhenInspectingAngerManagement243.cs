@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingAngerManagement
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -19,13 +19,13 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("Anger Management");
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheEpisode()
         {
             episodePage.Episode.Should().Be(43);
@@ -33,13 +33,13 @@
             episodePage.EpisodeName.Should().Be("Charlie Loses His Virginity Again");
         }
 
-        [TestMethod]
+        [Test]
         public void FindTheSubtitleVersions()
         {
             episodePage.SubtitleVersions.Count().Should().Be(9);
         }
 
-        [TestMethod]
+        [Test]
         public void FindTheSubtitles()
         {
             var firstVersion = episodePage.SubtitleVersions.First();
@@ -47,7 +47,7 @@
             firstVersion.Subtitles.Count.Should().Be(3);
         }
 
-        [TestMethod]
+        [Test]
         public void FindTheSubtitleLanguage()
         {
             var dutchVersion = episodePage.SubtitleVersions.Last();
@@ -55,7 +55,7 @@
             dutchVersion.Subtitles[0].Language.Should().Be("Dutch");
         }
 
-        [TestMethod]
+        [Test]
         public void FindTheVersionAge()
         {
             var versionWithDays = episodePage.SubtitleVersions.First();
@@ -67,7 +67,7 @@
             versionWithHours.Age.Hours.Should().Be(12);
         }
 
-        [TestMethod]
+        [Test]
         public void HearingImpairedSubtitleShouldBeMarked()
         {
             var nonImpairedVersion = episodePage.SubtitleVersions.ElementAt(0);
@@ -77,7 +77,7 @@
             impairedVersion.Subtitles[0].HearingImpaired.Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadCountShouldBeStored()
         {
             var subtitleWithDownloads = episodePage.SubtitleVersions.ElementAt(0).Subtitles.ElementAt(0);
@@ -85,7 +85,7 @@
             subtitleWithDownloads.Downloads.Should().Be(4610);
         }
 
-        [TestMethod]
+        [Test]
         public void IfNotDownloadedYetDownloadCountShouldBeZero()
         {
             var subtitleWithDownloads = episodePage.SubtitleVersions.ElementAt(0).Subtitles.ElementAt(1);
@@ -93,7 +93,7 @@
             subtitleWithDownloads.Downloads.Should().Be(0);
         }
 
-        [TestMethod]
+        [Test]
         public void FindMultipleSubtitleLanguages()
         {
             var firstVersion = episodePage.SubtitleVersions.First();
@@ -103,7 +103,7 @@
             firstVersion.Subtitles[2].Language.Should().Be("French");
         }
 
-        [TestMethod]
+        [Test]
         public void FindTheSubtitleVersionInformation()
         {
             episodePage.SubtitleVersions.ElementAt(0).Release.Should().Be("x264-KILLERS");

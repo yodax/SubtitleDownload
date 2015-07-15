@@ -2,14 +2,14 @@
 {
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenInspectingBadJudge
     {
         private EpisodePage episodePage;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             var reader =
@@ -19,20 +19,20 @@
             episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheShowName()
         {
             episodePage.ShowName.Should().Be("Bad Judge");
         }
 
-        [TestMethod]
+        [Test]
         public void FirstVersionShouldBeUploadedByKateGreen()
         {
             episodePage.SubtitleVersions.First().Uploader.Should().Be("kategreen");
             episodePage.SubtitleVersions.Should().HaveCount(2);
         }
 
-        [TestMethod]
+        [Test]
         public void LookForTheEpisode()
         {
             episodePage.Episode.Should().Be(12);

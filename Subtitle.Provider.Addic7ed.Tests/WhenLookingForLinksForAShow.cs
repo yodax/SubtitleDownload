@@ -5,13 +5,13 @@
     using System.Linq;
     using Common;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using NSubstitute;
 
-    [TestClass]
+    [TestFixture]
     public class WhenLookingForLinksForAShow
     {
-        [TestMethod]
+        [Test]
         public void IfLinksAreFoundTheyShouldBeAddedToFoundLinks()
         {
             var foundLinks = new List<FoundLink>
@@ -39,7 +39,7 @@
             foundLinks.ElementAt(23).ShowName.Should().Be("Brickleberry");
         }
 
-        [TestMethod]
+        [Test]
         public void IfLinksAreAlreadyPresentIgnoreAgeShouldStillBeTrue()
         {
             var foundLinks = new List<FoundLink>

@@ -4,24 +4,24 @@
     using System.IO;
     using System.Linq;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class WhenConnectingToAddicted
     {
-        [TestMethod]
+        [Test]
         public void IfLoginResultContainsLogoutWeAreLoggedIn()
         {
             "logout.php".IsLoggedIn().Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IfLoginResultDoesNotContainLogoutWeAreNotLoggedIn()
         {
             "login.php".IsLoggedIn().Should().BeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void PasswordsShouldBeUrlEncoded()
         {
             var postdata = AddictedWebClientHelpers.CreateLoginPostData("blaat", "*aB12&34");
@@ -29,7 +29,7 @@
             postdata.Should().Be("username=blaat&password=*aB12%2634&Submit=Log+in");
         }
 
-        [TestMethod]
+        [Test]
         public void TheResponseShouldBeReadCompletely()
         {
             const int bufferSize = 3000;
@@ -50,7 +50,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TheResponseShouldBeEmptyIfBufferIsEmpty()
         {
             const int bufferSize = 0;
