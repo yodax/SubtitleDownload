@@ -177,13 +177,13 @@ namespace Subtitle.Downloader.Tests
             var srtLocation =
                 MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
-                .Should().BeTrue();
+                .Should().BeTrue("Path should exist");
 
             fileSystem.File.ReadAllText(srtLocation)
                 .TrimEnd()
                 .Equals("Sub text", StringComparison.InvariantCulture)
                 .Should()
-                .BeTrue();
+                .BeTrue("Contents of file should match");
 
             fileSystem.FileExists(oldSubLocation)
                 .Should().BeTrue();
@@ -192,7 +192,7 @@ namespace Subtitle.Downloader.Tests
                 .TrimEnd()
                 .Equals("Old sub!", StringComparison.InvariantCulture)
                 .Should()
-                .BeTrue();
+                .BeTrue("Old file should contain correct content");
         }
 
         [Test]
