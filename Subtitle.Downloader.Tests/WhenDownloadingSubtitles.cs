@@ -178,18 +178,8 @@ namespace Subtitle.Downloader.Tests
             var srtLocation =
                 MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
 
-            foreach (var directory in fileSystem.AllDirectories)
-            {
-                    Debug.WriteLine(directory);
-            }
-
-            foreach (var file in fileSystem.AllFiles)
-            {
-                Debug.WriteLine(file);
-            }
-
             fileSystem.FileExists(srtLocation)
-                .Should().BeTrue("Path should exist");
+                .Should().BeTrue("Path should exist: " + fileSystem.AllFiles);
 
             fileSystem.File.ReadAllText(srtLocation)
                 .TrimEnd()
