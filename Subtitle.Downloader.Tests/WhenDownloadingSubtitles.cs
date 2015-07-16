@@ -179,7 +179,7 @@ namespace Subtitle.Downloader.Tests
                 MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
 
             fileSystem.FileExists(srtLocation)
-                .Should().BeTrue("Path should exist: " + fileSystem.AllFiles);
+                .Should().BeTrue("Path should exist: " + string.Join(";",fileSystem.AllFiles));
 
             fileSystem.File.ReadAllText(srtLocation)
                 .TrimEnd()
