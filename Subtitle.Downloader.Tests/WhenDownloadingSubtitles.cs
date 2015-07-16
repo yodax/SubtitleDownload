@@ -24,13 +24,7 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
             var mediaFinder = Substitute.For<IMediaFinder>();
             mediaFinder.LookFor(Arg.Any<string>(), Arg.Any<string>())
@@ -80,13 +74,7 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
             var previouslyDownloadedSubs = new List<DownloadedSub>
             {
@@ -98,7 +86,7 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -107,6 +95,22 @@ namespace Subtitle.Downloader.Tests
 
             subtitleDownloader.For(foundLinks);
             return fileSystem;
+        }
+
+        private static MediaFinder CreateMediaFinder(MockFileSystem fileSystem)
+        {
+            return new MediaFinder(MockUnixSupport.Path(@"c:\video"), fileSystem);
+        }
+
+        private static MockFileSystem CreateFileSystemWithAngerManagementEpisode()
+        {
+            return new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                {
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"),
+                    new MockFileData("")
+                }
+            });
         }
 
         [Test]
@@ -120,15 +124,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var download = CreateMockDownloader();
             var subtitleDownloader = new SubtitleDownloader(mediaFinder, download, fileSystem,
@@ -150,13 +148,11 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            //var oldSubLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt";
-            var oldSubLocation =
-                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt");
+            var oldSubLocation = MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt");
+
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 {
-                    //@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
                     MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"),
                     new MockFileData("")
                 },
@@ -166,7 +162,7 @@ namespace Subtitle.Downloader.Tests
                 }
             });
 
-            var mediaFinder = new MediaFinder(MockUnixSupport.Path(@"c:\video"), fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -202,8 +198,8 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"Dutch", "English"});
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation = MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
+
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
@@ -225,13 +221,7 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
             var mediaFinder = Substitute.For<IMediaFinder>();
             mediaFinder.LookFor(Arg.Any<string>(), Arg.Any<string>())
@@ -240,7 +230,7 @@ namespace Subtitle.Downloader.Tests
                     new Media
                     {
                         Name = @"Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                        Path = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"
+                        Path = MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv")
                     }
                 });
 
@@ -255,8 +245,9 @@ namespace Subtitle.Downloader.Tests
 
             subtitleDownloader.For(foundLinks);
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
+
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
@@ -278,15 +269,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -305,7 +290,7 @@ namespace Subtitle.Downloader.Tests
                 .ForDownloadedSubtitle(Arg.Any<EpisodePage>(), Arg.Any<SubtitleVersion>(),
                     Arg.Any<Provider.Addic7ed.Subtitle>(),
                     Arg.Any<SubtitleLink>(),
-                    Arg.Is(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt"),
+                    Arg.Is(MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt")),
                     Arg.Any<string>());
         }
 
@@ -320,15 +305,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var download = Substitute.For<IDownload>();
 
@@ -358,16 +337,16 @@ namespace Subtitle.Downloader.Tests
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"),
                     new MockFileData("")
                 },
                 {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt",
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt"),
                     new MockFileData("Old sub!")
                 }
             });
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -376,8 +355,8 @@ namespace Subtitle.Downloader.Tests
 
             subtitleDownloader.For(foundLinks);
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
@@ -393,10 +372,10 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem =
                 CheckForDownloadWithSubAlreadyDownloaded(
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-BOINK.mkv");
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-BOINK.mkv"));
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
         }
@@ -406,8 +385,8 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem = CheckForDownloadWithSubAlreadyDownloaded(string.Empty);
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeFalse();
         }
@@ -417,10 +396,10 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem =
                 CheckForDownloadWithSubAlreadyDownloaded(
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv");
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"));
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeFalse();
         }
@@ -430,8 +409,8 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"Dutch", "English"});
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.nl.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
@@ -447,8 +426,8 @@ namespace Subtitle.Downloader.Tests
         {
             var fileSystem = CheckAndDownloadASubtitle(new List<string> {"English"});
 
-            const string srtLocation =
-                @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt";
+            var srtLocation =
+                MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.en.srt");
             fileSystem.FileExists(srtLocation)
                 .Should().BeTrue();
 
@@ -470,16 +449,10 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var mediaLocation = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv";
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    mediaLocation,
-                    new MockFileData("")
-                }
-            });
+            var mediaLocation = MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv");
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
             var resourceDownloader = CreateMockDownloader();
             var previouslyDownloadedSubs = new List<DownloadedSub>();
             var subtitleDownloader = new SubtitleDownloader(mediaFinder, resourceDownloader, fileSystem,
@@ -513,15 +486,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = new ResourceDownload();
             var mockDownloader = Substitute.For<IDownload>();
@@ -559,12 +526,12 @@ namespace Subtitle.Downloader.Tests
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-NOGROUP.mkv",
+                    MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-NOGROUP.mkv"),
                     new MockFileData("")
                 }
             });
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = CreateMockDownloader();
 
@@ -598,15 +565,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var download = CreateMockDownloader();
 
@@ -633,15 +594,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var download = CreateMockDownloader();
 
@@ -668,15 +623,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var download = CreateMockDownloader();
 
@@ -701,15 +650,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = Substitute.For<IDownload>();
             var exception = new EpisodePageNoLongerExists("z");
@@ -743,15 +686,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = new ResourceDownload();
             var mockDownloader = Substitute.For<IDownload>();
@@ -789,15 +726,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var resourceDownloader = Substitute.For<IDownload>();
             var exception = new Exception();
@@ -831,15 +762,9 @@ namespace Subtitle.Downloader.Tests
                 }
             };
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {
-                    @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                    new MockFileData("")
-                }
-            });
+            var fileSystem = CreateFileSystemWithAngerManagementEpisode();
 
-            var mediaFinder = new MediaFinder(@"c:\video", fileSystem);
+            var mediaFinder = CreateMediaFinder(fileSystem);
 
             var mockDownloader = CreateMockDownloader();
 

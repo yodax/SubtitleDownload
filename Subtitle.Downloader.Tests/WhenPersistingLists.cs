@@ -25,7 +25,7 @@
             foundLinks.Store("FoundLinks", fileSystem);
             var newFoundLinks = new List<FoundLink>().Load("FoundLinks", fileSystem);
 
-            fileSystem.FileExists(@"c:\downloadTool\FoundLinks.xml").Should().BeTrue();
+            fileSystem.FileExists(MockUnixSupport.Path(@"c:\downloadTool\FoundLinks.xml")).Should().BeTrue();
             newFoundLinks.Count().Should().Be(1);
             newFoundLinks.ElementAt(0).FoundOn.Should().Be(dateTime);
             newFoundLinks.ElementAt(0).Link.Should().Be("Stored link");
@@ -42,7 +42,7 @@
             var newFoundLinks = new List<FoundLink>();
             newFoundLinks.Load("FoundLinks", fileSystem);
 
-            fileSystem.FileExists(@"c:\downloadTool\FoundLinks.xml").Should().BeTrue();
+            fileSystem.FileExists(MockUnixSupport.Path(@"c:\downloadTool\FoundLinks.xml")).Should().BeTrue();
             newFoundLinks.Count().Should().Be(0);
         }
 
@@ -71,8 +71,8 @@
         {
             return new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                {@"c:\downloadTool\tool.txt", new MockFileData("")}
-            }, @"c:\downloadTool\");
+                {MockUnixSupport.Path(@"c:\downloadTool\tool.txt"), new MockFileData("")}
+            }, MockUnixSupport.Path(@"c:\downloadTool\"));
         }
 
         [Test]

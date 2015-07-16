@@ -24,8 +24,8 @@ namespace Subtitle.Downloader.Tests
         {
             fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                {@"c:\downloadTool\Download.lock", new MockFileData("")}
-            }, @"c:\downloadTool\");
+                {MockUnixSupport.Path(@"c:\downloadTool\Download.lock"), new MockFileData("")}
+            }, MockUnixSupport.Path(@"c:\downloadTool\"));
         }
 
         private void ALockShouldNotBeSet()
@@ -60,7 +60,7 @@ namespace Subtitle.Downloader.Tests
 
         private void GivenAnEmptyFileSystem()
         {
-            fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>(), @"c:\downloadTool\");
+            fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>(), MockUnixSupport.Path(@"c:\downloadTool\"));
         }
 
         [Test]

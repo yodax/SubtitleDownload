@@ -14,9 +14,9 @@
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                {@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv", new MockFileData("")}
+                {MockUnixSupport.Path(@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv"), new MockFileData("")}
             });
-            var mediaFinder = new MediaFinderWithoutSubtitles(@"c:\video", fileSystem);
+            var mediaFinder = new MediaFinderWithoutSubtitles(MockUnixSupport.Path(@"c:\video"), fileSystem);
             var foundMedia = mediaFinder.LookFor("ShowName", "S01E01").ToList();
 
             foundMedia.Count().Should().Be(1);
@@ -28,10 +28,10 @@
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                {@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv", new MockFileData("")},
-                {@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.srt", new MockFileData("")}
+                {MockUnixSupport.Path(@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv"), new MockFileData("")},
+                {MockUnixSupport.Path(@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.srt"), new MockFileData("")}
             });
-            var mediaFinder = new MediaFinderWithoutSubtitles(@"c:\video", fileSystem);
+            var mediaFinder = new MediaFinderWithoutSubtitles(MockUnixSupport.Path(@"c:\video"), fileSystem);
             var foundMedia = mediaFinder.LookFor("ShowName", "S01E01").ToList();
 
             foundMedia.Should().BeEmpty();
