@@ -39,7 +39,8 @@
 
         protected string GetDirectoryName(string fullPath)
         {
-            return FileSystem.DirectoryInfo.FromDirectoryName(fullPath).Name;
+			var pathWithoutFinalSlash = fullPath.TrimEnd(Path.DirectorySeparatorChar);
+			return pathWithoutFinalSlash.Substring(pathWithoutFinalSlash.LastIndexOf(Path.DirectorySeparatorChar) + 1);         
         }
 
         protected IEnumerable<string> GetAllShowDirectories()
