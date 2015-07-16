@@ -82,10 +82,10 @@
             var foundMedia = mediaFinder.LookFor("ShowName", "S01E01").ToList();
 
             foundMedia.Count().Should().Be(2);
-            foundMedia.ElementAt(0).Path.Should().Be(@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv");
+			foundMedia.ElementAt(0).Path.Should().Be(MockUnixSupport.Path(@"c:\video\ShowName\S01E01\ShowName.S01E01.720p.HDTV-GROUP.mkv"));
             foundMedia.ElementAt(1)
                 .Path.Should()
-                .Be(@"c:\video\ShowName Us\S01E01\ShowName.Us.S01E01.720p.HDTV-GROUP.mkv");
+				.Be(MockUnixSupport.Path(@"c:\video\ShowName Us\S01E01\ShowName.Us.S01E01.720p.HDTV-GROUP.mkv"));
         }
 
         [Test]
@@ -138,9 +138,10 @@
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>());
 
-            Action act = () => new MediaFinder(MockUnixSupport.Path(@"c:\video"), fileSystem);
+			var path = MockUnixSupport.Path (@"c:\video");
+            Action act = () => new MediaFinder (path, fileSystem);
 
-            act.ShouldThrow<ArgumentException>().WithMessage(@"Media path not found: c:\video");
+			act.ShouldThrow<ArgumentException>().WithMessage(@"Media path not found: " + path);
         }
     }
 }

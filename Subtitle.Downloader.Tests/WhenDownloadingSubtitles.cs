@@ -33,7 +33,7 @@ namespace Subtitle.Downloader.Tests
                     new Media
                     {
                         Name = @"Anger.Management.S02E43.720p.HDTV-KILLERS.mkv",
-                        Path = @"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv"
+						Path = MockUnixSupport.Path(@"c:\video\Anger Management\S02E43\Anger.Management.S02E43.720p.HDTV-KILLERS.mkv")
                     }
                 });
 
