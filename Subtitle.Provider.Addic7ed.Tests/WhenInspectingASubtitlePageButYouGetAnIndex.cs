@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenInspectingASubtitlePageButYouGetAnIndex
     {

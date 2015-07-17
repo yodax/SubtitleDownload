@@ -1,17 +1,17 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using HtmlAgilityPack;
-    using ScrapySharp.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+using ScrapySharp.Extensions;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public static class AddictedEpisodePageParser
     {
         public static EpisodePage For(string pageContent)
         {
-            if (String.IsNullOrEmpty(pageContent))
+            if (string.IsNullOrEmpty(pageContent))
                 throw new EpisodePageIsEmtpyException();
 
             if (pageContent.Contains("<td valign=\"top\" class=\"newsDate\">"))
@@ -108,7 +108,7 @@
 
             var extraInfo = "";
             var extraInfoNode = node.SelectNodes(".//td[@class='newsDate']").FirstOrDefault();
-            if (extraInfoNode != null && !String.IsNullOrEmpty(extraInfoNode.InnerText.Trim()))
+            if (extraInfoNode != null && !string.IsNullOrEmpty(extraInfoNode.InnerText.Trim()))
                 extraInfo = " " + extraInfoNode.InnerText.Trim();
 
             return mainInfo + extraInfo;
@@ -117,7 +117,7 @@
         private static string FindUploader(this HtmlNode node)
         {
             var uploaderLink = node.SelectSingleNode(".//a[contains(@href, '/user/')]");
-            
+
             if (uploaderLink == null)
                 return "";
 
@@ -164,11 +164,13 @@
                 if (statusNode.InnerText.Trim().Equals("Completed", StringComparison.InvariantCultureIgnoreCase))
                     return true;
             }
-            catch {}
-            
+            catch
+            {
+            }
+
             return false;
         }
-        
+
         private static string FindLanguage(this HtmlNode node)
         {
             return node.SelectSingleNode(".//td[@class='language']").InnerText.Trim();
@@ -227,9 +229,8 @@
 
     public class EpisodePageNoLongerExists : Exception
     {
-        public EpisodePageNoLongerExists(string message): base(message)
+        public EpisodePageNoLongerExists(string message) : base(message)
         {
-            
         }
     }
 }

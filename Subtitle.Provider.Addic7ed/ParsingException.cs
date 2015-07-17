@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
+﻿using System;
 
+namespace Subtitle.Provider.Addic7ed
+{
     [Serializable]
     public class ParsingException : Exception
     {

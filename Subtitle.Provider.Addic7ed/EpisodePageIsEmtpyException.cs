@@ -1,12 +1,11 @@
+using System;
+
 namespace Subtitle.Provider.Addic7ed
 {
-    using System;
-
     public class EpisodePageIsEmtpyException : Exception
     {
-        public EpisodePageIsEmtpyException() : base ("Page is empty")
+        public EpisodePageIsEmtpyException() : base("Page is empty")
         {
-            
         }
     }
 }

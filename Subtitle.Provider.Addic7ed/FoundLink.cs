@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
+﻿using System;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class FoundLink
     {
         public DateTime FoundOn { get; set; }

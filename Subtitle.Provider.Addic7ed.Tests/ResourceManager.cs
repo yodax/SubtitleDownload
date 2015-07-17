@@ -1,9 +1,9 @@
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
 namespace Subtitle.Provider.Addic7ed.Tests
 {
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
     internal static class ResourceManager
     {
         public static TextReader GetInputFile(string filename)

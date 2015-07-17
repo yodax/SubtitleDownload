@@ -1,7 +1,7 @@
+using System.Globalization;
+
 namespace Subtitle.Provider.Addic7ed
 {
-    using System.Globalization;
-
     public static class ExtensionMethods
     {
         public static string GenerateSeasonEpisode(int season, int episode)

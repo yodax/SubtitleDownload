@@ -1,25 +1,70 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenDetectingUpdatedShows
     {
-        private List<string> feedLinks;
-        private List<FoundLink> foundLinks;
-        private LinkFinder linkFinder;
-
         [SetUp]
         public void Initialize()
         {
             GivenNoFoundLinks();
             GivenThreeSampleFeedLinks();
             GivenALinkFinder();
+        }
+
+        private List<string> _feedLinks;
+        private List<FoundLink> _foundLinks;
+        private LinkFinder _linkFinder;
+
+        private void GivenTheFoundLinkWithAFoundOnTime(string link, DateTime foundOn)
+        {
+            var firstDateTime = foundOn;
+            _foundLinks.Add(new FoundLink
+            {
+                Link = link,
+                FoundOn = firstDateTime
+            });
+        }
+
+        private void WhenILookForLinks()
+        {
+            _linkFinder.LookForLinksFromFeeds(_feedLinks);
+        }
+
+        private void GivenTheFoundLink(string link)
+        {
+            _foundLinks.Add(new FoundLink
+            {
+                Link = link
+            });
+        }
+
+        private void GivenALinkFinder()
+        {
+            var download = new ResourceDownload();
+
+            _linkFinder = new LinkFinder(_foundLinks, download);
+        }
+
+        private void GivenNoFoundLinks()
+        {
+            _foundLinks = new List<FoundLink>();
+        }
+
+        private void GivenThreeSampleFeedLinks()
+        {
+            _feedLinks = new List<string>
+            {
+                "Addic7edLastNewVersions.xml",
+                "Addic7edLastUploaded.xml",
+                "AddictedHotspot.xml"
+            };
         }
 
         [Test]
@@ -29,7 +74,7 @@
 
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(10);
+            _foundLinks.Count.Should().Be(10);
         }
 
         [Test]
@@ -41,9 +86,9 @@
 
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(10);
+            _foundLinks.Count.Should().Be(10);
 
-            foundLinks.First(l => l.Link.StartsWith(link)).FoundOn.Should().Be(foundOn);
+            _foundLinks.First(l => l.Link.StartsWith(link)).FoundOn.Should().Be(foundOn);
         }
 
         [Test]
@@ -53,7 +98,7 @@
 
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(11);
+            _foundLinks.Count.Should().Be(11);
         }
 
         [Test]
@@ -63,17 +108,17 @@
 
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(10);
+            _foundLinks.Count.Should().Be(10);
         }
 
         [Test]
         public void IfAnEpisodeLinkIsFoundItShouldBeStored()
         {
-            feedLinks.RemoveRange(1, 2);
+            _feedLinks.RemoveRange(1, 2);
 
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(7);
+            _foundLinks.Count.Should().Be(7);
         }
 
         [Test]
@@ -81,7 +126,7 @@
         {
             WhenILookForLinks();
 
-            foundLinks.Count.Should().Be(10);
+            _foundLinks.Count.Should().Be(10);
         }
 
         [Test]
@@ -89,55 +134,10 @@
         {
             WhenILookForLinks();
 
-            var southPark = foundLinks.First(l => l.Link.Contains("South"));
+            var southPark = _foundLinks.First(l => l.Link.Contains("South"));
 
             southPark.ShowName.Should().Be("South Park");
             southPark.SeasonEpisode.Should().Be("S17E08");
-        }
-
-        private void GivenTheFoundLinkWithAFoundOnTime(string link, DateTime foundOn)
-        {
-            var firstDateTime = foundOn;
-            foundLinks.Add(new FoundLink
-            {
-                Link = link,
-                FoundOn = firstDateTime
-            });
-        }
-
-        private void WhenILookForLinks()
-        {
-            linkFinder.LookForLinksFromFeeds(feedLinks);
-        }
-
-        private void GivenTheFoundLink(string link)
-        {
-            foundLinks.Add(new FoundLink
-            {
-                Link = link
-            });
-        }
-
-        private void GivenALinkFinder()
-        {
-            var download = new ResourceDownload();
-
-            linkFinder = new LinkFinder(foundLinks, download);
-        }
-
-        private void GivenNoFoundLinks()
-        {
-            foundLinks = new List<FoundLink>();
-        }
-
-        private void GivenThreeSampleFeedLinks()
-        {
-            feedLinks = new List<string>
-            {
-                "Addic7edLastNewVersions.xml",
-                "Addic7edLastUploaded.xml",
-                "AddictedHotspot.xml"
-            };
         }
     }
 }

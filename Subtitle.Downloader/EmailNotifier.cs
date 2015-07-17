@@ -1,24 +1,25 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
-    using System.Text;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Text;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader
+{
     public class EmailNotifier : INotifier
     {
-        private readonly IMailer email;
+        private readonly IMailer _email;
 
         public EmailNotifier(string smtpServer, string mailFrom, string mailTo)
         {
-            email = new Mailer(smtpServer, mailFrom, mailTo);
+            _email = new Mailer(smtpServer, mailFrom, mailTo);
         }
 
         public EmailNotifier(IMailer mailer)
         {
-            email = mailer;
+            _email = mailer;
         }
 
-        public void ForDownloadedSubtitle(EpisodePage episodePage, SubtitleVersion subtitleVersion, Subtitle subtitle,
+        public void ForDownloadedSubtitle(EpisodePage episodePage, SubtitleVersion subtitleVersion,
+            Provider.Addic7ed.Subtitle subtitle,
             SubtitleLink link, string downloadedTo, string linkToEpisode)
         {
             var subject = string.Format("{0} Sub: {1} {2}", subtitle.Language, episodePage.ShowName,
@@ -41,10 +42,11 @@
                 linkToEpisode,
                 subtitleVersion.Release);
 
-            email.Send(subject, body);
+            _email.Send(subject, body);
         }
 
-        public void ForException(Exception exception, string message = null, EpisodePage episodePage = null, Subtitle version = null, SubtitleLink link = null)
+        public void ForException(Exception exception, string message = null, EpisodePage episodePage = null,
+            Provider.Addic7ed.Subtitle version = null, SubtitleLink link = null)
         {
             const string subject = "Error when downloading subs";
 
@@ -70,7 +72,7 @@
 
             body.AppendLine(string.Format("Trace: {0}", exception.StackTrace));
 
-            email.Send(subject, body.ToString());
+            _email.Send(subject, body.ToString());
         }
 
         public void ForDownloadCountExceeded()
@@ -78,7 +80,7 @@
             const string subject = "Download count exceeded for addic7ed";
             const string body = "Download count exceeded for addic7ed. Please get a VIP subscription.";
 
-            email.Send(subject, body);
+            _email.Send(subject, body);
         }
 
         private string AgeToString(TimeSpan age)

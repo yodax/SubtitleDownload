@@ -1,14 +1,12 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenInspectingHawaiiFiveO
     {
-        private EpisodePage episodePage;
-
         [SetUp]
         public void Setup()
         {
@@ -16,27 +14,29 @@
                 ResourceManager.GetInputFile("Hawaii Five-0 (2010) - 04x10.html");
             var pageContent = reader.ReadToEnd();
 
-            episodePage = AddictedEpisodePageParser.For(pageContent);
+            _episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [Test]
-        public void LookForTheShowName()
-        {
-            episodePage.ShowName.Should().Be("Hawaii Five-0 (2010)");
-        }
+        private EpisodePage _episodePage;
 
         [Test]
         public void FirstVersionShouldBeUploadedByElderman()
         {
-            episodePage.SubtitleVersions.First().Uploader.Should().Be("elderman");
+            _episodePage.SubtitleVersions.First().Uploader.Should().Be("elderman");
         }
 
         [Test]
         public void LookForTheEpisode()
         {
-            episodePage.Episode.Should().Be(10);
-            episodePage.Season.Should().Be(4);
-            episodePage.EpisodeName.Should().Be("Ho'onani Makuakane (Honor Thy Father)");
+            _episodePage.Episode.Should().Be(10);
+            _episodePage.Season.Should().Be(4);
+            _episodePage.EpisodeName.Should().Be("Ho'onani Makuakane (Honor Thy Father)");
+        }
+
+        [Test]
+        public void LookForTheShowName()
+        {
+            _episodePage.ShowName.Should().Be("Hawaii Five-0 (2010)");
         }
     }
 }

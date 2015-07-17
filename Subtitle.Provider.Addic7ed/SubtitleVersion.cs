@@ -1,8 +1,8 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class SubtitleVersion
     {
         public SubtitleVersion()
@@ -11,7 +11,6 @@
         }
 
         public string Release { get; set; }
-
         public List<Subtitle> Subtitles { get; set; }
         public TimeSpan Age { get; set; }
         public string Uploader { get; set; }

@@ -1,54 +1,38 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenInspectingTheWalkingDead408
     {
-        private EpisodePage episodePage;
-
         [SetUp]
         public void Setup()
         {
             var reader = ResourceManager.GetInputFile("The Walking Dead - 04x08 - Too Far Gone.html");
             var pageContent = reader.ReadToEnd();
 
-            episodePage = AddictedEpisodePageParser.For(pageContent);
+            _episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [Test]
-        public void LookForTheShowName()
-        {
-            episodePage.ShowName.Should().Be("The Walking Dead");
-        }
+        private EpisodePage _episodePage;
 
         [Test]
-        public void LookForTheEpisode()
+        public void FindTheDowloadLinks()
         {
-            episodePage.Episode.Should().Be(8);
-            episodePage.Season.Should().Be(4);
-            episodePage.EpisodeName.Should().Be("Too Far Gone");
-        }
+            var firstVersion = _episodePage.SubtitleVersions.First();
+            var frenchWithJustADownloadLink = firstVersion.Subtitles.First(s => s.Language.Equals("French"));
 
-        [Test]
-        public void FindTheSubtitleVersions()
-        {
-            episodePage.SubtitleVersions.Count().Should().Be(21);
-        }
-
-        [Test]
-        public void IfTheReleaseHasExtraGroupsTheShouldBeAddedToTheReleaseInformation()
-        {
-            var versionWithExtraInfo = episodePage.SubtitleVersions.ElementAt(2);
-            versionWithExtraInfo.Release.Should().Be("KILLERS Works with AFG, HDTV mSD");
+            frenchWithJustADownloadLink.Links.Count.Should().Be(1);
+            frenchWithJustADownloadLink.Links.ElementAt(0).Type.Should().Be(SubtitleLinkType.Download);
+            frenchWithJustADownloadLink.Links.ElementAt(0).Link.Should().Be("http://www.addic7ed.com/updated/8/81967/0");
         }
 
         [Test]
         public void FindTheDowloadLinksWithAnOriginalAndUpdatedVersion()
         {
-            var firstVersion = episodePage.SubtitleVersions.First();
+            var firstVersion = _episodePage.SubtitleVersions.First();
             var englishUpdatedLanguage = firstVersion.Subtitles.First(s => s.Language.Equals("English"));
 
             englishUpdatedLanguage.Links.Count.Should().Be(2);
@@ -61,14 +45,30 @@
         }
 
         [Test]
-        public void FindTheDowloadLinks()
+        public void FindTheSubtitleVersions()
         {
-            var firstVersion = episodePage.SubtitleVersions.First();
-            var frenchWithJustADownloadLink = firstVersion.Subtitles.First(s => s.Language.Equals("French"));
+            _episodePage.SubtitleVersions.Count().Should().Be(21);
+        }
 
-            frenchWithJustADownloadLink.Links.Count.Should().Be(1);
-            frenchWithJustADownloadLink.Links.ElementAt(0).Type.Should().Be(SubtitleLinkType.Download);
-            frenchWithJustADownloadLink.Links.ElementAt(0).Link.Should().Be("http://www.addic7ed.com/updated/8/81967/0");
+        [Test]
+        public void IfTheReleaseHasExtraGroupsTheShouldBeAddedToTheReleaseInformation()
+        {
+            var versionWithExtraInfo = _episodePage.SubtitleVersions.ElementAt(2);
+            versionWithExtraInfo.Release.Should().Be("KILLERS Works with AFG, HDTV mSD");
+        }
+
+        [Test]
+        public void LookForTheEpisode()
+        {
+            _episodePage.Episode.Should().Be(8);
+            _episodePage.Season.Should().Be(4);
+            _episodePage.EpisodeName.Should().Be("Too Far Gone");
+        }
+
+        [Test]
+        public void LookForTheShowName()
+        {
+            _episodePage.ShowName.Should().Be("The Walking Dead");
         }
     }
 }

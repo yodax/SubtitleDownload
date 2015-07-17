@@ -1,11 +1,10 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System;
-    using System.IO;
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System.IO;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenConnectingToAddicted
     {
@@ -30,10 +29,23 @@
         }
 
         [Test]
+        public void TheResponseShouldBeEmptyIfBufferIsEmpty()
+        {
+            const int bufferSize = 0;
+            var buffer = new byte[bufferSize];
+
+            var stream = new MemoryStream(buffer);
+
+            var result = stream.ReadResponse();
+
+            result.Should().BeEmpty();
+        }
+
+        [Test]
         public void TheResponseShouldBeReadCompletely()
         {
             const int bufferSize = 3000;
-            var buffer = new Byte[bufferSize];
+            var buffer = new byte[bufferSize];
 
             for (var i = 0; i < bufferSize; i++)
             {
@@ -48,19 +60,6 @@
             {
                 character.Should().Be('a');
             }
-        }
-
-        [Test]
-        public void TheResponseShouldBeEmptyIfBufferIsEmpty()
-        {
-            const int bufferSize = 0;
-            var buffer = new Byte[bufferSize];
-
-            var stream = new MemoryStream(buffer);
-
-            var result = stream.ReadResponse();
-
-            result.Should().BeEmpty();
         }
     }
 }

@@ -1,27 +1,27 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenInspectingASubtitlePage
     {
-        private EpisodePage episodePage;
-
         [SetUp]
         public void Setup()
         {
             var reader = ResourceManager.GetInputFile("The Walking Dead - 04x08 - Too Far Gone.html");
             var pageContent = reader.ReadToEnd();
 
-            episodePage = AddictedEpisodePageParser.For(pageContent);
+            _episodePage = AddictedEpisodePageParser.For(pageContent);
         }
+
+        private EpisodePage _episodePage;
 
         [Test]
         public void EpisodeSeasonShouldBeS04E08()
         {
-            episodePage.SeasonEpisode.Should().Be("S04E08");
+            _episodePage.SeasonEpisode.Should().Be("S04E08");
         }
 
         [Test]

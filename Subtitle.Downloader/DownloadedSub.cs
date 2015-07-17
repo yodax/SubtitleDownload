@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
+﻿using System;
 
+namespace Subtitle.Downloader
+{
     public class DownloadedSub
     {
         public DateTime On { get; set; }

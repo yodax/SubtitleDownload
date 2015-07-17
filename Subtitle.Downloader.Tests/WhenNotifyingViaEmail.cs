@@ -1,31 +1,27 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using NUnit.Framework;
-    using NSubstitute;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using NSubstitute;
+using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenNotifyingViaEmail
     {
-        private IMailer mailMock;
-        private EmailNotifier notifier;
-
         [SetUp]
         public void Setup()
         {
-            mailMock = Substitute.For<IMailer>();
-            notifier = new EmailNotifier(mailMock);
+            _mailMock = Substitute.For<IMailer>();
+            _notifier = new EmailNotifier(_mailMock);
         }
 
-        [Test]
-        public void IfDownloadCountWasExceeded()
-        {
-            notifier.ForDownloadCountExceeded();
+        private IMailer _mailMock;
+        private EmailNotifier _notifier;
 
-            MailShouldHaveBeenSendWith("Download count exceeded for addic7ed",
-                "Download count exceeded for addic7ed. Please get a VIP subscription.");
+        private void MailShouldHaveBeenSendWith(string subject, string body)
+        {
+            _mailMock.Received().Send(Arg.Is(subject), Arg.Is(body));
         }
 
         [Test]
@@ -36,7 +32,7 @@
                 Link = "link",
                 Type = SubtitleLinkType.Download
             };
-            var subtitle = new Subtitle
+            var subtitle = new Provider.Addic7ed.Subtitle
             {
                 Downloads = 0,
                 HearingImpaired = false,
@@ -51,7 +47,7 @@
                 Release = "KILLERS",
                 Age = new TimeSpan(0, 7, 0, 0),
                 Uploader = "elderman",
-                Subtitles = new List<Subtitle>
+                Subtitles = new List<Provider.Addic7ed.Subtitle>
                 {
                     subtitle
                 }
@@ -63,7 +59,7 @@
             };
             var page = new EpisodePage("ShowName", 1, 1, "Episode name", subtitleVersions);
 
-            notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "linkToEpisode");
+            _notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "linkToEpisode");
             var body = "Dutch subtitle was downloaded for ShowName S01E01" + Environment.NewLine
                        + Environment.NewLine
                        + @"Version age: 7 hours" + Environment.NewLine + Environment.NewLine
@@ -84,7 +80,7 @@
                 Link = "link",
                 Type = SubtitleLinkType.Download
             };
-            var subtitle = new Subtitle
+            var subtitle = new Provider.Addic7ed.Subtitle
             {
                 Downloads = 0,
                 HearingImpaired = false,
@@ -99,7 +95,7 @@
                 Release = "KILLERS",
                 Age = new TimeSpan(1, 0, 0, 0),
                 Uploader = "elderman",
-                Subtitles = new List<Subtitle>
+                Subtitles = new List<Provider.Addic7ed.Subtitle>
                 {
                     subtitle
                 }
@@ -111,7 +107,7 @@
             };
             var page = new EpisodePage("ShowName", 1, 1, "Episode name", subtitleVersions);
 
-            notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "linkToEpisode");
+            _notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "linkToEpisode");
             var body = "Dutch subtitle was downloaded for ShowName S01E01" + Environment.NewLine
                        + Environment.NewLine
                        + @"Version age: 1 day" + Environment.NewLine + Environment.NewLine
@@ -131,7 +127,7 @@
                 Link = "link",
                 Type = SubtitleLinkType.Download
             };
-            var subtitle = new Subtitle
+            var subtitle = new Provider.Addic7ed.Subtitle
             {
                 Downloads = 0,
                 HearingImpaired = false,
@@ -146,7 +142,7 @@
                 Release = "KILLERS",
                 Age = new TimeSpan(2, 0, 0, 0),
                 Uploader = "elderman",
-                Subtitles = new List<Subtitle>
+                Subtitles = new List<Provider.Addic7ed.Subtitle>
                 {
                     subtitle
                 }
@@ -158,7 +154,7 @@
             };
             var page = new EpisodePage("ShowName", 1, 1, "Episode name", subtitleVersions);
 
-            notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "LinkToEpisode");
+            _notifier.ForDownloadedSubtitle(page, version, subtitle, link, @"/tank/video/TV/blaat.srt", "LinkToEpisode");
             var body = "Dutch subtitle was downloaded for ShowName S01E01" + Environment.NewLine
                        + Environment.NewLine
                        + @"Version age: 2 days" + Environment.NewLine + Environment.NewLine
@@ -170,9 +166,13 @@
             MailShouldHaveBeenSendWith("Dutch Sub: ShowName S01E01", body);
         }
 
-        private void MailShouldHaveBeenSendWith(string subject, string body)
+        [Test]
+        public void IfDownloadCountWasExceeded()
         {
-            mailMock.Received().Send(Arg.Is(subject), Arg.Is(body));
+            _notifier.ForDownloadCountExceeded();
+
+            MailShouldHaveBeenSendWith("Download count exceeded for addic7ed",
+                "Download count exceeded for addic7ed. Please get a VIP subscription.");
         }
     }
 }

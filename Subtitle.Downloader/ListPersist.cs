@@ -1,40 +1,40 @@
-﻿namespace Subtitle.Downloader
-{
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using Provider.Addic7ed;
+﻿using System.Collections.Generic;
+using System.IO.Abstractions;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader
+{
     public class ListPersist
     {
         private const string FoundLinksStoreName = "FoundLinks";
         private const string DownloadedSubsStoreName = "DownloadedSubs";
-        private readonly IFileSystem fileSystem;
+        private readonly IFileSystem _fileSystem;
 
         public ListPersist(IFileSystem fileSystem)
         {
-            this.fileSystem = fileSystem;
+            _fileSystem = fileSystem;
         }
 
         public void ToDisk(List<FoundLink> foundLinks)
         {
             // Save storage to disk
-            foundLinks.Store(FoundLinksStoreName, fileSystem);
+            foundLinks.Store(FoundLinksStoreName, _fileSystem);
         }
 
         public void ToDisk(List<DownloadedSub> downloadedSubs)
         {
             // Save storage to disk
-            downloadedSubs.Store(DownloadedSubsStoreName, fileSystem);
+            downloadedSubs.Store(DownloadedSubsStoreName, _fileSystem);
         }
 
         public List<DownloadedSub> FromDisk(List<DownloadedSub> downloadedSubs)
         {
-            return downloadedSubs.Load(DownloadedSubsStoreName, fileSystem);
+            return downloadedSubs.Load(DownloadedSubsStoreName, _fileSystem);
         }
 
         public List<FoundLink> FromDisk(List<FoundLink> foundLinks)
         {
-            return foundLinks.Load(FoundLinksStoreName, fileSystem);
+            return foundLinks.Load(FoundLinksStoreName, _fileSystem);
         }
     }
 }

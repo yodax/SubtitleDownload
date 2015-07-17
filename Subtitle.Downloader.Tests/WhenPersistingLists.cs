@@ -1,16 +1,39 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO.Abstractions.TestingHelpers;
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Abstractions.TestingHelpers;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenPersistingLists
     {
+        private static MockFileSystem CreateFileSystem()
+        {
+            return new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                {MockUnixSupport.Path(@"c:\downloadTool\tool.txt"), new MockFileData("")}
+            }, MockUnixSupport.Path(@"c:\downloadTool\"));
+        }
+
+        [Test]
+        public void IfFoundLinksContainsNoItemsNoItemsShouldBeStored()
+        {
+            var foundLinks = new List<FoundLink>();
+
+            var fileSystem = CreateFileSystem();
+
+            foundLinks.Store("FoundLinks", fileSystem);
+            var newFoundLinks = new List<FoundLink>();
+            newFoundLinks.Load("FoundLinks", fileSystem);
+
+            fileSystem.FileExists(MockUnixSupport.Path(@"c:\downloadTool\FoundLinks.xml")).Should().BeTrue();
+            newFoundLinks.Count().Should().Be(0);
+        }
+
         [Test]
         public void IfFoundLinksContainsOneItemOneItemShouldBeStored()
         {
@@ -32,18 +55,14 @@
         }
 
         [Test]
-        public void IfFoundLinksContainsNoItemsNoItemsShouldBeStored()
+        public void IfStoreIsNotThereYetAnEmptyListShouldBeReturned()
         {
-            var foundLinks = new List<FoundLink>();
-
+            var downloadedSubs = new List<DownloadedSub>();
             var fileSystem = CreateFileSystem();
 
-            foundLinks.Store("FoundLinks", fileSystem);
-            var newFoundLinks = new List<FoundLink>();
-            newFoundLinks.Load("FoundLinks", fileSystem);
+            downloadedSubs.Load("DownloadedSubs", fileSystem);
 
-            fileSystem.FileExists(MockUnixSupport.Path(@"c:\downloadTool\FoundLinks.xml")).Should().BeTrue();
-            newFoundLinks.Count().Should().Be(0);
+            downloadedSubs.Count().Should().Be(0);
         }
 
         [Test]
@@ -67,14 +86,6 @@
             newFoundLinks.Count.Should().Be(2);
         }
 
-        private static MockFileSystem CreateFileSystem()
-        {
-            return new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {MockUnixSupport.Path(@"c:\downloadTool\tool.txt"), new MockFileData("")}
-            }, MockUnixSupport.Path(@"c:\downloadTool\"));
-        }
-
         [Test]
         public void ShouldWorkForDownloadedSub()
         {
@@ -90,17 +101,6 @@
             downloadedSubs.Load("DownloadedSubs", fileSystem);
 
             downloadedSubs.Count.Should().Be(1);
-        }
-
-        [Test]
-        public void IfStoreIsNotThereYetAnEmptyListShouldBeReturned()
-        {
-            var downloadedSubs = new List<DownloadedSub>();
-            var fileSystem = CreateFileSystem();
-
-            downloadedSubs.Load("DownloadedSubs", fileSystem);
-
-            downloadedSubs.Count().Should().Be(0);
         }
     }
 }

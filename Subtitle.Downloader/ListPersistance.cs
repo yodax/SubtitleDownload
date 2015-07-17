@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Downloader
-{
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Xml.Serialization;
 
+namespace Subtitle.Downloader
+{
     public static class ListPersistance
     {
         public static void Store<T>(this List<T> listToPersist, string storeName, IFileSystem fileSystem)

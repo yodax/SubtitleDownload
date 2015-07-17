@@ -1,11 +1,10 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+
 namespace Subtitle.Provider.Addic7ed
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-
     public static class AddictedWebClientHelpers
     {
         public static bool IsLoggedIn(this string result)
@@ -21,7 +20,7 @@ namespace Subtitle.Provider.Addic7ed
                 {"password", password},
                 {"Submit", "Log in"}
             };
-            var postdata = String.Join("&", valuesToSendInPost.Select(x => x.Key + "=" + WebUtility.UrlEncode(x.Value)));
+            var postdata = string.Join("&", valuesToSendInPost.Select(x => x.Key + "=" + WebUtility.UrlEncode(x.Value)));
             return postdata;
         }
 

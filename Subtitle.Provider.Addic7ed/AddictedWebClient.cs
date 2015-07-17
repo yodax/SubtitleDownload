@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Net;
-    using System.Text;
+﻿using System;
+using System.Net;
+using System.Text;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class AddictedWebClient : WebClient
     {
         public AddictedWebClient()
@@ -51,7 +51,8 @@
             if (request != null)
             {
                 request.CookieContainer = CookieContainer;
-                request.UserAgent = @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71";
+                request.UserAgent =
+                    @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71";
                 return request;
             }
 

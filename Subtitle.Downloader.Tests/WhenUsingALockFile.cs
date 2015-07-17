@@ -16,13 +16,13 @@ namespace Subtitle.Downloader.Tests
             GivenALockingMechanism();
         }
 
-        private bool aquiredLock;
-        private MockFileSystem fileSystem;
-        private Lock lockFile;
+        private bool _aquiredLock;
+        private MockFileSystem _fileSystem;
+        private Lock _lockFile;
 
         private void GivenAFileSystemWithALockPresent()
         {
-            fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            _fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 {MockUnixSupport.Path(@"c:\downloadTool\Download.lock"), new MockFileData("")}
             }, MockUnixSupport.Path(@"c:\downloadTool\"));
@@ -30,37 +30,38 @@ namespace Subtitle.Downloader.Tests
 
         private void ALockShouldNotBeSet()
         {
-            aquiredLock.Should().BeFalse();
+            _aquiredLock.Should().BeFalse();
         }
 
         private void ALockFileShouldBePresentOnTheFileSystem()
         {
-            fileSystem.File.Exists("Download.lock").Should().BeTrue();
+            _fileSystem.File.Exists("Download.lock").Should().BeTrue();
         }
 
         private void ALockShouldBeSet()
         {
-            aquiredLock.Should().BeTrue();
+            _aquiredLock.Should().BeTrue();
         }
 
         private void WhenIAquireALock()
         {
-            aquiredLock = lockFile.Aquire();
+            _aquiredLock = _lockFile.Aquire();
         }
 
         private void WhenIReleaseALock()
         {
-            lockFile.Release();
+            _lockFile.Release();
         }
 
         private void GivenALockingMechanism()
         {
-            lockFile = new Lock(fileSystem);
+            _lockFile = new Lock(_fileSystem);
         }
 
         private void GivenAnEmptyFileSystem()
         {
-            fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>(), MockUnixSupport.Path(@"c:\downloadTool\"));
+            _fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>(),
+                MockUnixSupport.Path(@"c:\downloadTool\"));
         }
 
         [Test]

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
 namespace Subtitle.Downloader.Tests
 {
-    using System.Collections.Generic;
-    using FluentAssertions;
-    using Provider.Addic7ed;
-
     [TestFixture]
     public class WhenDownloadingFromAFaultyFeed
     {
@@ -17,7 +15,7 @@ namespace Subtitle.Downloader.Tests
 
             var feedLinks = new List<string>
             {
-                "FaultyRss.xml",
+                "FaultyRss.xml"
             };
 
             var download = new ResourceDownload();

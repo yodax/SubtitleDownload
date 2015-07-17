@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Net;
-    using System.Text.RegularExpressions;
+﻿using System;
+using System.Net;
+using System.Text.RegularExpressions;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public static class FoundLinkExtensions
     {
         public static EpisodeInfo GetEpisodeInfo(this FoundLink foundLink)

@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public static class LinkExtensions
     {
         public static string StripAddictedEpisode(this string url)

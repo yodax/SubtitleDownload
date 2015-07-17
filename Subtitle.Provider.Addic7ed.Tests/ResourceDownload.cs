@@ -1,10 +1,10 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using Common;
+﻿using System.IO;
+using System.Linq;
+using System.Reflection;
+using Subtitle.Common;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     public class ResourceDownload : IDownload
     {
         public string From(string url, string referer = null)

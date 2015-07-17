@@ -1,13 +1,13 @@
-﻿namespace SubtitleDownload
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using System.Linq;
-    using Properties;
-    using Subtitle.Downloader;
-    using Subtitle.Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Linq;
+using Subtitle.Downloader;
+using Subtitle.Provider.Addic7ed;
+using SubtitleDownload.Properties;
 
+namespace SubtitleDownload
+{
     internal class Program
     {
         private const string RssLinksStoreName = "FeedLinks";
@@ -38,7 +38,7 @@
                 var lockFile = new Lock(fileSystem);
                 if (!lockFile.Aquire())
                     return;
-                
+
                 try
                 {
                     // Check for switches
@@ -125,7 +125,6 @@
                 // Always release the lock
                 new Lock(new FileSystem()).Release();
             }
-            
         }
     }
 }

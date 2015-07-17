@@ -1,10 +1,10 @@
-﻿namespace Subtitle.Downloader
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Abstractions;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
 
+namespace Subtitle.Downloader
+{
     public class MediaFinder : MediaFinderBase, IMediaFinder
     {
         public MediaFinder(string mediaRootPath, IFileSystem fileSystem = null)
@@ -29,7 +29,7 @@
                     yield return new Media
                     {
                         Name = Path.GetFileName(file),
-                        Path = file,
+                        Path = file
                     };
                 }
             }

@@ -1,44 +1,46 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using System.Threading;
-    using Common;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Threading;
+using Subtitle.Common;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader
+{
     public class SubtitleSession
     {
-        private readonly IDownload download;
-        private readonly List<DownloadedSub> downloadedSubs;
-        private readonly List<string> feedLinks;
-        private readonly IFileSystem fileSystem;
-        private readonly List<FoundLink> foundLinks;
-        private readonly int maximumDaysOld;
-        private readonly IMediaFinder mediaFinder;
-        private readonly INotifier notify;
-        private readonly IEnumerable<string> orderedAllowedLanguages;
-        private readonly ListPersist persist;
-        private readonly TimeSpan oneMinute = new TimeSpan(0, 0, 1, 0);
-        private readonly TimeSpan thirthyMinutes = new TimeSpan(0, 0, 30, 0);
+        private readonly IDownload _download;
+        private readonly List<DownloadedSub> _downloadedSubs;
+        private readonly List<string> _feedLinks;
+        private readonly IFileSystem _fileSystem;
+        private readonly List<FoundLink> _foundLinks;
+        private readonly int _maximumDaysOld;
+        private readonly IMediaFinder _mediaFinder;
+        private readonly INotifier _notify;
+        private readonly TimeSpan _oneMinute = new TimeSpan(0, 0, 1, 0);
+        private readonly IEnumerable<string> _orderedAllowedLanguages;
+        private readonly ListPersist _persist;
+        private readonly TimeSpan _thirthyMinutes = new TimeSpan(0, 0, 30, 0);
 
-        public SubtitleSession(IDownload download, IFileSystem fileSystem, INotifier notify, IMediaFinder mediaFinder, List<FoundLink> foundLinks, List<string> feedLinks, List<DownloadedSub> downloadedSubs, int maximumDaysOld, IEnumerable<string> orderedAllowedLanguages, ListPersist persist)
+        public SubtitleSession(IDownload download, IFileSystem fileSystem, INotifier notify, IMediaFinder mediaFinder,
+            List<FoundLink> foundLinks, List<string> feedLinks, List<DownloadedSub> downloadedSubs, int maximumDaysOld,
+            IEnumerable<string> orderedAllowedLanguages, ListPersist persist)
         {
-            this.persist = persist;
-            this.downloadedSubs = downloadedSubs;
-            this.feedLinks = feedLinks;
-            this.foundLinks = foundLinks;
-            this.mediaFinder = mediaFinder;
-            this.notify = notify;
-            this.fileSystem = fileSystem;
-            this.download = download;
-            this.maximumDaysOld = maximumDaysOld;
-            this.orderedAllowedLanguages = orderedAllowedLanguages;
+            _persist = persist;
+            _downloadedSubs = downloadedSubs;
+            _feedLinks = feedLinks;
+            _foundLinks = foundLinks;
+            _mediaFinder = mediaFinder;
+            _notify = notify;
+            _fileSystem = fileSystem;
+            _download = download;
+            _maximumDaysOld = maximumDaysOld;
+            _orderedAllowedLanguages = orderedAllowedLanguages;
         }
 
         public void StartNewSession(SessionAction sessionAction, string searchShowName = null, string episode = null)
         {
-            var linkFinder = new LinkFinder(foundLinks, download);
+            var linkFinder = new LinkFinder(_foundLinks, _download);
 
             if (sessionAction == SessionAction.Check || sessionAction == SessionAction.Download)
             {
@@ -57,45 +59,45 @@
                 }
             }
 
-            var subtitileDownload = new SubtitleDownloader(mediaFinder, download, fileSystem, downloadedSubs,
-                                    notify, maximumDaysOld, orderedAllowedLanguages);
+            var subtitileDownload = new SubtitleDownloader(_mediaFinder, _download, _fileSystem, _downloadedSubs,
+                _notify, _maximumDaysOld, _orderedAllowedLanguages);
 
             if (sessionAction == SessionAction.Download)
             {
-                subtitileDownload.For(foundLinks);
+                subtitileDownload.For(_foundLinks);
             }
 
             if (sessionAction == SessionAction.Deamon)
             {
-                var lastRunTimeFeed = DateTime.Now - thirthyMinutes;
-                var lastRunTimeDownload = DateTime.Now - thirthyMinutes;
+                var lastRunTimeFeed = DateTime.Now - _thirthyMinutes;
+                var lastRunTimeDownload = DateTime.Now - _thirthyMinutes;
 
                 while (true)
                 {
-                    if (TimeCheck.ForInterval(thirthyMinutes, lastRunTimeFeed))
+                    if (TimeCheck.ForInterval(_thirthyMinutes, lastRunTimeFeed))
                     {
                         CheckAction(linkFinder);
-                        persist.ToDisk(downloadedSubs);
-                        persist.ToDisk(foundLinks);
+                        _persist.ToDisk(_downloadedSubs);
+                        _persist.ToDisk(_foundLinks);
                         lastRunTimeFeed = DateTime.Now;
                     }
 
                     if (TimeCheck.ForTime(TimeCheck.TodayAt(18, 0), lastRunTimeDownload))
                     {
-                        subtitileDownload.For(foundLinks);
-                        persist.ToDisk(downloadedSubs);
-                        persist.ToDisk(foundLinks);
+                        subtitileDownload.For(_foundLinks);
+                        _persist.ToDisk(_downloadedSubs);
+                        _persist.ToDisk(_foundLinks);
                         lastRunTimeDownload = DateTime.Now;
                     }
 
-                    Thread.Sleep(oneMinute);
+                    Thread.Sleep(_oneMinute);
                 }
             }
         }
 
         private void CheckAction(LinkFinder linkFinder)
         {
-            linkFinder.LookForLinksFromFeeds(feedLinks);
+            linkFinder.LookForLinksFromFeeds(_feedLinks);
         }
     }
 }

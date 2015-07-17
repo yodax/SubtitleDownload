@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 
-
-
 namespace Subtitle.Downloader.Tests
 {
     [TestFixture]

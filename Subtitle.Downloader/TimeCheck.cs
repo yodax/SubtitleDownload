@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
+﻿using System;
 
+namespace Subtitle.Downloader
+{
     public class TimeCheck
     {
         public static bool ForInterval(TimeSpan timeThatShouldHavePassed, DateTime lastRunTime)
@@ -13,7 +13,7 @@
         {
             var now = !currentTime.HasValue ? DateTime.Now : currentTime.Value;
 
-            return now >= scheduledTime && lastRunTime < scheduledTime ;
+            return now >= scheduledTime && lastRunTime < scheduledTime;
         }
 
         public static DateTime TodayAt(int hours, int minutes)

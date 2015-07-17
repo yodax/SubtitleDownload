@@ -1,35 +1,35 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Abstractions;
-    using System.Linq;
-    using System.Text;
-    using Common;
-    using Provider.Addic7ed;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Text;
+using Subtitle.Common;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader
+{
     public class SubtitleDownloader
     {
-        private readonly IDownload download;
-        private readonly IFileSystem fileSystem;
-        private readonly int maximumDaysOld;
-        private readonly IMediaFinder mediaFinder;
-        private readonly INotifier notifier;
-        private readonly IEnumerable<string> orderedAllowedLanguages;
-        private readonly List<DownloadedSub> previouslyDownloadedSubs;
+        private readonly IDownload _download;
+        private readonly IFileSystem _fileSystem;
+        private readonly int _maximumDaysOld;
+        private readonly IMediaFinder _mediaFinder;
+        private readonly INotifier _notifier;
+        private readonly IEnumerable<string> _orderedAllowedLanguages;
+        private readonly List<DownloadedSub> _previouslyDownloadedSubs;
 
         public SubtitleDownloader(IMediaFinder mediaFinder, IDownload download, IFileSystem fileSystem,
             List<DownloadedSub> previouslyDownloadedSubs, INotifier notifier, int maximumDaysOld,
             IEnumerable<string> orderedAllowedLanguages)
         {
-            this.maximumDaysOld = maximumDaysOld;
-            this.notifier = notifier;
-            this.previouslyDownloadedSubs = previouslyDownloadedSubs;
-            this.fileSystem = fileSystem;
-            this.download = download;
-            this.mediaFinder = mediaFinder;
-            this.orderedAllowedLanguages = orderedAllowedLanguages;
+            _maximumDaysOld = maximumDaysOld;
+            _notifier = notifier;
+            _previouslyDownloadedSubs = previouslyDownloadedSubs;
+            _fileSystem = fileSystem;
+            _download = download;
+            _mediaFinder = mediaFinder;
+            _orderedAllowedLanguages = orderedAllowedLanguages;
         }
 
         public void For(List<FoundLink> foundLinks)
@@ -40,7 +40,7 @@
                 try
                 {
                     var episodeInfo = foundLink.GetEpisodeInfo();
-                    if (!mediaFinder.LookFor(episodeInfo.ShowName, episodeInfo.SeasonEpisode).Any())
+                    if (!_mediaFinder.LookFor(episodeInfo.ShowName, episodeInfo.SeasonEpisode).Any())
                     {
                         handledLinks.Add(foundLink);
                         continue;
@@ -50,7 +50,7 @@
                     var pageContent = "";
                     try
                     {
-                        pageContent = download.From(foundLink.Link);
+                        pageContent = _download.From(foundLink.Link);
                         episodePage = AddictedEpisodePageParser.For(pageContent);
                     }
                     catch (EpisodePageNoLongerExists)
@@ -60,13 +60,14 @@
                     }
                     catch (Exception exception)
                     {
-                        notifier.ForException(exception, string.Format("Error parsing link: {0}\n\nContent: {1}", foundLink.Link, pageContent));
+                        _notifier.ForException(exception,
+                            string.Format("Error parsing link: {0}\n\nContent: {1}", foundLink.Link, pageContent));
                         handledLinks.Add(foundLink);
                         continue;
                     }
 
-                    if (maximumDaysOld > 0
-                        && episodePage.OldestAge.TotalHours >= maximumDaysOld*24
+                    if (_maximumDaysOld > 0
+                        && episodePage.OldestAge.TotalHours >= _maximumDaysOld*24
                         && !foundLink.IgnoreAge)
                     {
                         handledLinks.Add(foundLink);
@@ -74,57 +75,59 @@
                     }
 
                     var downloadExeeded = false;
-                    foreach (var media in mediaFinder.LookFor(episodePage.ShowName, episodePage.SeasonEpisode))
+                    foreach (var media in _mediaFinder.LookFor(episodePage.ShowName, episodePage.SeasonEpisode))
                     {
                         var subtitleSearchResult = SubtitleSearch.For(media, episodePage.SubtitleVersions,
-                            orderedAllowedLanguages);
+                            _orderedAllowedLanguages);
 
                         if (subtitleSearchResult == null)
                             continue;
 
                         try
                         {
-                            if (previouslyDownloadedSubs.Any(preDownloadedSub => 
-                                preDownloadedSub.Link.Equals(subtitleSearchResult.Link.Link) 
-                                && 
+                            if (_previouslyDownloadedSubs.Any(preDownloadedSub =>
+                                preDownloadedSub.Link.Equals(subtitleSearchResult.Link.Link)
+                                &&
                                 (string.IsNullOrEmpty(preDownloadedSub.For)
-                                ||
-                                preDownloadedSub.For.Equals(media.Path)
-                                )))
+                                 ||
+                                 preDownloadedSub.For.Equals(media.Path)
+                                    )))
                                 continue;
 
-                            var srtLocation = media.Path.Substring(0, media.Path.Length - 3) + subtitleSearchResult.Subtitle.Language.ToShortLanguage() + ".srt";
-                            var srtContent = download.From(subtitleSearchResult.Link.Link, foundLink.Link);
+                            var srtLocation = media.Path.Substring(0, media.Path.Length - 3) +
+                                              subtitleSearchResult.Subtitle.Language.ToShortLanguage() + ".srt";
+                            var srtContent = _download.From(subtitleSearchResult.Link.Link, foundLink.Link);
 
                             if (srtContent.Contains("Daily Download count exceeded"))
                             {
                                 downloadExeeded = true;
-                                notifier.ForDownloadCountExceeded();
+                                _notifier.ForDownloadCountExceeded();
                                 continue;
                             }
 
-                            SaveStringToFile(fileSystem, srtLocation, srtContent);
+                            SaveStringToFile(_fileSystem, srtLocation, srtContent);
 
-                            previouslyDownloadedSubs.Add(new DownloadedSub
+                            _previouslyDownloadedSubs.Add(new DownloadedSub
                             {
                                 Link = subtitleSearchResult.Link.Link,
                                 On = DateTime.Now,
                                 For = media.Path
                             });
 
-                            notifier.ForDownloadedSubtitle(episodePage, subtitleSearchResult.Version,
+                            _notifier.ForDownloadedSubtitle(episodePage, subtitleSearchResult.Version,
                                 subtitleSearchResult.Subtitle, subtitleSearchResult.Link, srtLocation, foundLink.Link);
                         }
                         catch (Exception exception)
                         {
                             if (subtitleSearchResult != null)
                             {
-                                notifier.ForException(exception, "Broken in download for", episodePage, subtitleSearchResult.Subtitle,
+                                _notifier.ForException(exception, "Broken in download for", episodePage,
+                                    subtitleSearchResult.Subtitle,
                                     subtitleSearchResult.Link);
                             }
                             else
                             {
-                                notifier.ForException(exception);
+                                _notifier.ForException(exception);
                             }
                         }
                     }
@@ -135,7 +138,7 @@
                 }
                 catch (Exception exception)
                 {
-                    notifier.ForException(exception);
+                    _notifier.ForException(exception);
                 }
             }
 

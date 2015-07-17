@@ -1,12 +1,10 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO.Abstractions.TestingHelpers;
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System;
+using System.IO.Abstractions.TestingHelpers;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenStoringSubtitle
     {

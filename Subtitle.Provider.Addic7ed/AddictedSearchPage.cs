@@ -1,7 +1,7 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class AddictedSearchPage
     {
         public AddictedSearchPage(IEnumerable<FoundLink> foundLinks)

@@ -1,19 +1,19 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Subtitle.Common;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class LinkFinder
     {
-        private readonly IDownload download;
-        private readonly List<FoundLink> foundLinks;
+        private readonly IDownload _download;
+        private readonly List<FoundLink> _foundLinks;
 
         public LinkFinder(List<FoundLink> foundLinks, IDownload download)
         {
-            this.download = download;
-            this.foundLinks = foundLinks;
+            _download = download;
+            _foundLinks = foundLinks;
         }
 
         public void LookForLinksFromFeeds(IEnumerable<string> feedLinks)
@@ -22,7 +22,7 @@
             foreach (var feedLink in feedLinks)
             {
                 linksFoundFromFeeds.AddRange(AddictedFeedReader
-                    .GetAllLinksFrom(download.From(feedLink))
+                    .GetAllLinksFrom(_download.From(feedLink))
                     .Where(l => l.Contains("/serie/"))
                     .Select(s => new FoundLink
                     {
@@ -36,16 +36,16 @@
 
         private void AddFoundLinksToStore(IEnumerable<FoundLink> newlyFoundLinks)
         {
-            var allLinks = foundLinks.Union(newlyFoundLinks).ToList();
-            foundLinks.Clear();
-            foundLinks.AddRange(allLinks
+            var allLinks = _foundLinks.Union(newlyFoundLinks).ToList();
+            _foundLinks.Clear();
+            _foundLinks.AddRange(allLinks
                 .GroupBy(l => l.Link.StripAddictedEpisode())
                 .Select(grp => grp.OrderByDescending(x => x.IgnoreAge).ThenBy(x => x.FoundOn)
                     .First()));
 
             var badLinks = new List<FoundLink>();
 
-            foundLinks.ForEach(l =>
+            _foundLinks.ForEach(l =>
             {
                 try
                 {
@@ -59,7 +59,7 @@
                 }
             });
 
-            badLinks.ForEach(badLink => foundLinks.Remove(badLink));
+            badLinks.ForEach(badLink => _foundLinks.Remove(badLink));
         }
 
         public void LookForLinksFromShow(string showName)
@@ -71,13 +71,13 @@
         private IEnumerable<FoundLink> SearchForLinksForShow(string searchResultUrl)
         {
             var searchUrl = searchResultUrl;
-            var pageContent = download.From(searchUrl);
+            var pageContent = _download.From(searchUrl);
 
             try
             {
                 var links = AddictedSearchPageParser.For(pageContent)
-                        .FoundLinks
-                        .Where(l => l.Link.Contains("/serie/"));
+                    .FoundLinks
+                    .Where(l => l.Link.Contains("/serie/"));
                 return links;
             }
             catch

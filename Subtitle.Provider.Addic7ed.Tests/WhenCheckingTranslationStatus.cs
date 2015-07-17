@@ -1,14 +1,12 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenCheckingTranslationStatus
     {
-        private EpisodePage episodePage;
-
         [SetUp]
         public void Setup()
         {
@@ -16,20 +14,21 @@
                 ResourceManager.GetInputFile("Hawaii Five-0 (2010) - 04x10.html");
             var pageContent = reader.ReadToEnd();
 
-            episodePage = AddictedEpisodePageParser.For(pageContent);
+            _episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
+        private EpisodePage _episodePage;
 
         [Test]
         public void EnglishShouldBeCompleted()
         {
-            episodePage.SubtitleVersions.First().Subtitles.First().Completed.Should().BeTrue();
+            _episodePage.SubtitleVersions.First().Subtitles.First().Completed.Should().BeTrue();
         }
 
         [Test]
         public void PortugueseShouldNotBeCompleted()
         {
-            var portugueseVersion = episodePage.SubtitleVersions.First()
+            var portugueseVersion = _episodePage.SubtitleVersions.First()
                 .Subtitles.FirstOrDefault(s => s.Language.Equals("Portuguese (Brazilian)"));
 
             portugueseVersion.Should().NotBeNull();

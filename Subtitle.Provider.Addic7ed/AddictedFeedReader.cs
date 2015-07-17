@@ -1,8 +1,8 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class AddictedFeedReader
     {
         public static IEnumerable<string> GetAllLinksFrom(string feedContent)

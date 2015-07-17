@@ -1,12 +1,13 @@
-﻿namespace Subtitle.Downloader
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Provider.Addic7ed;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader
+{
     public class SubtitleSearch
     {
-        public static SubtitleSearchResult For(Media media, IEnumerable<SubtitleVersion> subtitleVersions, IEnumerable<string> orderedAllowedLanguages)
+        public static SubtitleSearchResult For(Media media, IEnumerable<SubtitleVersion> subtitleVersions,
+            IEnumerable<string> orderedAllowedLanguages)
         {
             var allowedLanguages = orderedAllowedLanguages;
 
@@ -16,13 +17,14 @@
             var results = (
                 from subtitleVersion in allSubtitlesSuitableForMedia
                 from subtitle in subtitleVersion.Subtitles
-                    .Where(s => 
+                    .Where(s =>
                         allowedLanguages.Any(a => s.Language.Equals(a))
                         &&
                         s.Completed
                     )
                 from link in subtitle.Links
-                select new {
+                select new
+                {
                     LanguageId = allowedLanguages.ToList().IndexOf(subtitle.Language),
                     Result = new SubtitleSearchResult
                     {

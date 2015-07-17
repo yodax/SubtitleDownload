@@ -1,13 +1,13 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using Common;
-    using FluentAssertions;
-    using NUnit.Framework;
-    using NSubstitute;
-    using Provider.Addic7ed;
+﻿using System.Collections.Generic;
+using System.IO.Abstractions;
+using FluentAssertions;
+using NSubstitute;
+using NUnit.Framework;
+using Subtitle.Common;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenStartingASession
     {
@@ -43,73 +43,6 @@
         }
 
         [Test]
-        public void IfSearchCommandIsIssuedLookForLinksFromShowShouldBeCalled()
-        {
-            var resourceDownloader = new ResourceDownload();
-            var download = Substitute.For<IDownload>();
-
-            download.From(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(x => resourceDownloader.From(
-                    "Search_Brickleberry.html"));
-
-            var fileSystem = Substitute.For<IFileSystem>();
-            var notify = Substitute.For<INotifier>();
-            var mediaFinder = Substitute.For<IMediaFinder>();
-            var foundLinks = new List<FoundLink>();
-            var feedLinks = new List<string>();
-            var downloadedSubs = new List<DownloadedSub>();
-
-            var subtitleSession = new SubtitleSession(
-                download,
-                fileSystem,
-                notify,
-                mediaFinder,
-                foundLinks,
-                feedLinks,
-                downloadedSubs, -1, new List<string> { "Dutch", "English" }, new ListPersist(fileSystem));
-
-            subtitleSession.StartNewSession(SessionAction.Search, "Brickleberry");
-
-            download.Received()
-                .From(Arg.Is(@"http://www.addic7ed.com/search.php?search=Brickleberry&Submit=Search"), Arg.Any<string>());
-            foundLinks.Count.Should().Be(23);
-        }
-
-        [Test]
-        public void IfSearchCommandIsIssuedForASpecificEpisodeLookForLinksFromEpisodeShouldBeCalled()
-        {
-            var resourceDownloader = new ResourceDownload();
-            var download = Substitute.For<IDownload>();
-
-            download.From(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(x => resourceDownloader.From(
-                    "Search_Brickleberry.html"));
-
-            var fileSystem = Substitute.For<IFileSystem>();
-            var notify = Substitute.For<INotifier>();
-            var mediaFinder = Substitute.For<IMediaFinder>();
-            var foundLinks = new List<FoundLink>();
-            var feedLinks = new List<string>();
-            var downloadedSubs = new List<DownloadedSub>();
-
-            var subtitleSession = new SubtitleSession(
-                download,
-                fileSystem,
-                notify,
-                mediaFinder,
-                foundLinks,
-                feedLinks,
-                downloadedSubs, -1, new List<string> { "Dutch", "English" }, new ListPersist(fileSystem));
-
-            subtitleSession.StartNewSession(SessionAction.Search, "Brickleberry", "S02E01");
-
-            download.Received()
-                .From(Arg.Is(@"http://www.addic7ed.com/search.php?search=Brickleberry+2x1&Submit=Search"),
-                    Arg.Any<string>());
-            foundLinks.Count.Should().Be(1);
-        }
-
-        [Test]
         public void IfDownloadCommandIsIssuedCheckShouldAlsoBeDone()
         {
             var download = Substitute.For<IDownload>();
@@ -133,7 +66,7 @@
                 mediaFinder,
                 foundLinks,
                 feedLinks,
-                downloadedSubs, -1, new List<string> { "Dutch", "English" }, new ListPersist(fileSystem));
+                downloadedSubs, -1, new List<string> {"Dutch", "English"}, new ListPersist(fileSystem));
 
             subtitleSession.StartNewSession(SessionAction.Download);
 
@@ -171,11 +104,78 @@
                 mediaFinder,
                 foundLinks,
                 feedLinks,
-                downloadedSubs, -1, new List<string> { "Dutch", "English" }, new ListPersist(fileSystem));
+                downloadedSubs, -1, new List<string> {"Dutch", "English"}, new ListPersist(fileSystem));
 
             subtitleSession.StartNewSession(SessionAction.Download);
 
             mediaFinder.Received().LookFor(Arg.Any<string>(), Arg.Any<string>());
+        }
+
+        [Test]
+        public void IfSearchCommandIsIssuedForASpecificEpisodeLookForLinksFromEpisodeShouldBeCalled()
+        {
+            var resourceDownloader = new ResourceDownload();
+            var download = Substitute.For<IDownload>();
+
+            download.From(Arg.Any<string>(), Arg.Any<string>())
+                .Returns(x => resourceDownloader.From(
+                    "Search_Brickleberry.html"));
+
+            var fileSystem = Substitute.For<IFileSystem>();
+            var notify = Substitute.For<INotifier>();
+            var mediaFinder = Substitute.For<IMediaFinder>();
+            var foundLinks = new List<FoundLink>();
+            var feedLinks = new List<string>();
+            var downloadedSubs = new List<DownloadedSub>();
+
+            var subtitleSession = new SubtitleSession(
+                download,
+                fileSystem,
+                notify,
+                mediaFinder,
+                foundLinks,
+                feedLinks,
+                downloadedSubs, -1, new List<string> {"Dutch", "English"}, new ListPersist(fileSystem));
+
+            subtitleSession.StartNewSession(SessionAction.Search, "Brickleberry", "S02E01");
+
+            download.Received()
+                .From(Arg.Is(@"http://www.addic7ed.com/search.php?search=Brickleberry+2x1&Submit=Search"),
+                    Arg.Any<string>());
+            foundLinks.Count.Should().Be(1);
+        }
+
+        [Test]
+        public void IfSearchCommandIsIssuedLookForLinksFromShowShouldBeCalled()
+        {
+            var resourceDownloader = new ResourceDownload();
+            var download = Substitute.For<IDownload>();
+
+            download.From(Arg.Any<string>(), Arg.Any<string>())
+                .Returns(x => resourceDownloader.From(
+                    "Search_Brickleberry.html"));
+
+            var fileSystem = Substitute.For<IFileSystem>();
+            var notify = Substitute.For<INotifier>();
+            var mediaFinder = Substitute.For<IMediaFinder>();
+            var foundLinks = new List<FoundLink>();
+            var feedLinks = new List<string>();
+            var downloadedSubs = new List<DownloadedSub>();
+
+            var subtitleSession = new SubtitleSession(
+                download,
+                fileSystem,
+                notify,
+                mediaFinder,
+                foundLinks,
+                feedLinks,
+                downloadedSubs, -1, new List<string> {"Dutch", "English"}, new ListPersist(fileSystem));
+
+            subtitleSession.StartNewSession(SessionAction.Search, "Brickleberry");
+
+            download.Received()
+                .From(Arg.Is(@"http://www.addic7ed.com/search.php?search=Brickleberry&Submit=Search"), Arg.Any<string>());
+            foundLinks.Count.Should().Be(23);
         }
     }
 }

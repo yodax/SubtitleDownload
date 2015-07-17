@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public class EpisodePage
     {
         public EpisodePage(string showName, int episode, int season, string episodeName,

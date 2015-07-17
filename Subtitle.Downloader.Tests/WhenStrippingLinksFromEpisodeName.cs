@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using FluentAssertions;
-    using NUnit.Framework;
-    using Provider.Addic7ed;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenStrippingLinksFromEpisodeName
     {

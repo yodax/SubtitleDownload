@@ -1,22 +1,22 @@
-﻿namespace Subtitle.Downloader
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Abstractions;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
 
+namespace Subtitle.Downloader
+{
     public class MediaFinderBase
     {
-        private readonly string[] allowedMediaExtensions = {".mkv", ".avi", ".mp4"};
-        private readonly string mediaRootPath;
+        private readonly string[] _allowedMediaExtensions = {".mkv", ".avi", ".mp4"};
+        private readonly string _mediaRootPath;
         protected IFileSystem FileSystem;
 
         public MediaFinderBase(string mediaRootPath, IFileSystem fileSystem = null)
         {
             FileSystem = fileSystem ?? new FileSystem();
 
-            this.mediaRootPath = mediaRootPath;
+            _mediaRootPath = mediaRootPath;
 
             if (!FileSystem.Directory.Exists(mediaRootPath))
                 throw new ArgumentException("Media path not found: " + mediaRootPath);
@@ -34,18 +34,18 @@
 
         protected bool CheckIfTheFileHasAMediaExtension(string fileToCheck)
         {
-            return allowedMediaExtensions.Any(e => e.Equals(Path.GetExtension(fileToCheck)));
+            return _allowedMediaExtensions.Any(e => e.Equals(Path.GetExtension(fileToCheck)));
         }
 
         protected string GetDirectoryName(string fullPath)
         {
-			var pathWithoutFinalSlash = fullPath.TrimEnd(Path.DirectorySeparatorChar);
-			return pathWithoutFinalSlash.Substring(pathWithoutFinalSlash.LastIndexOf(Path.DirectorySeparatorChar) + 1);         
+            var pathWithoutFinalSlash = fullPath.TrimEnd(Path.DirectorySeparatorChar);
+            return pathWithoutFinalSlash.Substring(pathWithoutFinalSlash.LastIndexOf(Path.DirectorySeparatorChar) + 1);
         }
 
         protected IEnumerable<string> GetAllShowDirectories()
         {
-            return FileSystem.Directory.GetDirectories(mediaRootPath);
+            return FileSystem.Directory.GetDirectories(_mediaRootPath);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace Subtitle.Provider.Addic7ed
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using HtmlAgilityPack;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using HtmlAgilityPack;
 
+namespace Subtitle.Provider.Addic7ed
+{
     public static class AddictedSearchPageParser
     {
         public static string ToSearchUrl(this string showName)
@@ -15,7 +15,7 @@
 
         public static AddictedSearchPage For(string pageContent)
         {
-            if (String.IsNullOrEmpty(pageContent))
+            if (string.IsNullOrEmpty(pageContent))
                 throw new EpisodePageIsEmtpyException();
 
             var html = new HtmlDocument();

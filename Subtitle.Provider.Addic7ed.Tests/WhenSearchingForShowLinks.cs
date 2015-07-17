@@ -1,13 +1,20 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System;
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenSearchingForShowLinks
     {
+        [Test]
+        public void ConstructPropperSearchUrl()
+        {
+            var url = "Showname With Spaces".ToSearchUrl();
+            url.Should().Be(@"http://www.addic7ed.com/search.php?search=Showname+With+Spaces&Submit=Search");
+        }
+
         [Test]
         public void FindAllLinksForShow()
         {
@@ -43,13 +50,6 @@
             Action act = () => AddictedSearchPageParser.For("");
 
             act.ShouldThrow<EpisodePageIsEmtpyException>().WithMessage("Page is empty");
-        }
-
-        [Test]
-        public void ConstructPropperSearchUrl()
-        {
-            var url = "Showname With Spaces".ToSearchUrl();
-            url.Should().Be(@"http://www.addic7ed.com/search.php?search=Showname+With+Spaces&Submit=Search");
         }
     }
 }

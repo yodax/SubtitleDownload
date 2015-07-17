@@ -1,14 +1,12 @@
-﻿namespace Subtitle.Provider.Addic7ed.Tests
-{
-    using System.Linq;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Provider.Addic7ed.Tests
+{
     [TestFixture]
     public class WhenInspectingBadJudge
     {
-        private EpisodePage episodePage;
-
         [SetUp]
         public void Setup()
         {
@@ -16,28 +14,30 @@
                 ResourceManager.GetInputFile("Bad Judge - 01x12.html");
             var pageContent = reader.ReadToEnd();
 
-            episodePage = AddictedEpisodePageParser.For(pageContent);
+            _episodePage = AddictedEpisodePageParser.For(pageContent);
         }
 
-        [Test]
-        public void LookForTheShowName()
-        {
-            episodePage.ShowName.Should().Be("Bad Judge");
-        }
+        private EpisodePage _episodePage;
 
         [Test]
         public void FirstVersionShouldBeUploadedByKateGreen()
         {
-            episodePage.SubtitleVersions.First().Uploader.Should().Be("kategreen");
-            episodePage.SubtitleVersions.Should().HaveCount(2);
+            _episodePage.SubtitleVersions.First().Uploader.Should().Be("kategreen");
+            _episodePage.SubtitleVersions.Should().HaveCount(2);
         }
 
         [Test]
         public void LookForTheEpisode()
         {
-            episodePage.Episode.Should().Be(12);
-            episodePage.Season.Should().Be(1);
-            episodePage.EpisodeName.Should().Be("Lockdown");
+            _episodePage.Episode.Should().Be(12);
+            _episodePage.Season.Should().Be(1);
+            _episodePage.EpisodeName.Should().Be("Lockdown");
+        }
+
+        [Test]
+        public void LookForTheShowName()
+        {
+            _episodePage.ShowName.Should().Be("Bad Judge");
         }
     }
 }

@@ -1,19 +1,40 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using FluentAssertions;
-    using NUnit.Framework;
-    using Provider.Addic7ed;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using Subtitle.Provider.Addic7ed;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenTransFormingAFoundLinkToEpisodeInfo
     {
-        private static EpisodeInfo episodeInfo;
+        private static Provider.Addic7ed.EpisodeInfo _episodeInfo;
+
+        private static void ThenTheEpisodeShouldBe(string episode)
+        {
+            _episodeInfo.SeasonEpisode.Should().Be(episode);
+        }
+
+        private static void ThenTheShowNameShouldBe(string showName)
+        {
+            _episodeInfo.ShowName.Should().Be(showName);
+        }
+
+        private static void GivenALink(string link)
+        {
+            var foundLink = new FoundLink
+            {
+                Link = link
+            };
+
+            _episodeInfo = foundLink.GetEpisodeInfo();
+        }
 
         [Test]
-        public void TheEpisodeInfoShouldContainTheShowName()
+        public void IfItIsASearchStringTheEpisodeInfoShouldContainTheShowInfo()
         {
-            GivenALink("http://www.addic7ed.com/serie/Ripper_Street/2/7/Our_Betrayal_(1)");
-            ThenTheShowNameShouldBe("Ripper Street");
+            GivenALink("http://www.addic7ed.com/search.php?search=Anger+Management+2x43&Submit=Search");
+            ThenTheShowNameShouldBe("Anger Management");
+            ThenTheEpisodeShouldBe("S02E43");
         }
 
         [Test]
@@ -32,31 +53,10 @@
         }
 
         [Test]
-        public void IfItIsASearchStringTheEpisodeInfoShouldContainTheShowInfo()
+        public void TheEpisodeInfoShouldContainTheShowName()
         {
-            GivenALink("http://www.addic7ed.com/search.php?search=Anger+Management+2x43&Submit=Search");
-            ThenTheShowNameShouldBe("Anger Management");
-            ThenTheEpisodeShouldBe("S02E43");
-        }
-
-        private static void ThenTheEpisodeShouldBe(string episode)
-        {
-            episodeInfo.SeasonEpisode.Should().Be(episode);
-        }
-
-        private static void ThenTheShowNameShouldBe(string showName)
-        {
-            episodeInfo.ShowName.Should().Be(showName);
-        }
-
-        private static void GivenALink(string link)
-        {
-            var foundLink = new FoundLink
-            {
-                Link = link
-            };
-
-            episodeInfo = foundLink.GetEpisodeInfo();
+            GivenALink("http://www.addic7ed.com/serie/Ripper_Street/2/7/Our_Betrayal_(1)");
+            ThenTheShowNameShouldBe("Ripper Street");
         }
     }
 }

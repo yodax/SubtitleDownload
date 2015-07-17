@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Downloader.Tests
-{
-    using System;
-    using FluentAssertions;
-    using NUnit.Framework;
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
 
+namespace Subtitle.Downloader.Tests
+{
     [TestFixture]
     public class WhenCheckingIfWeNeedToRunCheckSession
     {
@@ -16,31 +16,15 @@
         {
             get { return DateTime.Now.AddMinutes(-1); }
         }
+
         private DateTime TwentyMinutesAgo
         {
             get { return DateTime.Now.AddMinutes(-20); }
         }
 
-        [Test]
-        public void OneMinuteHasPassedWeShouldNotRun()
+        public TimeSpan OneMinute
         {
-            TimeCheck.ForInterval(FifteenMinutes, OneMinuteAgo).Should().BeFalse();
-        }
-
-        [Test]
-        public void TwentyMinutesHavePassedWeShouldRun()
-        {
-            TimeCheck.ForInterval(FifteenMinutes, TwentyMinutesAgo).Should().BeTrue();
-        }
-
-        [Test]
-        public void LastRunTimeIsBeforeScheduleCurrentTimeIsAfter()
-        {
-            var currentTime = TimeCheck.TodayAt(19, 00);
-            var scheduledTime = TimeCheck.TodayAt(18, 00);
-            var lastRunTime = TimeCheck.TodayAt(17, 00);
-            TimeCheck.ForTime(scheduledTime, lastRunTime, currentTime)
-                .Should().BeTrue();
+            get { return new TimeSpan(0, 0, 1, 0); }
         }
 
         [Test]
@@ -54,8 +38,26 @@
                 .Should().BeFalse();
         }
 
-        public TimeSpan OneMinute {
-            get { return new TimeSpan(0, 0, 1, 0); }
+        [Test]
+        public void LastRunTimeIsBeforeScheduleCurrentTimeIsAfter()
+        {
+            var currentTime = TimeCheck.TodayAt(19, 00);
+            var scheduledTime = TimeCheck.TodayAt(18, 00);
+            var lastRunTime = TimeCheck.TodayAt(17, 00);
+            TimeCheck.ForTime(scheduledTime, lastRunTime, currentTime)
+                .Should().BeTrue();
+        }
+
+        [Test]
+        public void OneMinuteHasPassedWeShouldNotRun()
+        {
+            TimeCheck.ForInterval(FifteenMinutes, OneMinuteAgo).Should().BeFalse();
+        }
+
+        [Test]
+        public void TwentyMinutesHavePassedWeShouldRun()
+        {
+            TimeCheck.ForInterval(FifteenMinutes, TwentyMinutesAgo).Should().BeTrue();
         }
     }
 }

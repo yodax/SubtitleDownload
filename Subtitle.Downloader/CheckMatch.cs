@@ -1,9 +1,9 @@
-﻿namespace Subtitle.Downloader
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
+namespace Subtitle.Downloader
+{
     public static class CheckMatch
     {
         public static bool For(string releaseName, string subtitleInformation)
@@ -89,19 +89,20 @@
 
         private static bool CheckIfGroupsAreInterchangeable(string releaseGroup, string lowerSubtitle)
         {
-            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] { "dimension", "lol", "sys" }))
+            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] {"dimension", "lol", "sys"}))
                 return true;
 
-            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] { "xii", "asap", "immerse" }))
+            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] {"xii", "asap", "immerse"}))
                 return true;
 
-            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] { "remarkable", "excellence" }))
+            if (CheckForInterchangeableGroup(releaseGroup, lowerSubtitle, new[] {"remarkable", "excellence"}))
                 return true;
 
             return false;
         }
 
-        private static bool CheckForInterchangeableGroup(string releaseGroup, string lowerSubtitle, string[] interchangeableGroups)
+        private static bool CheckForInterchangeableGroup(string releaseGroup, string lowerSubtitle,
+            string[] interchangeableGroups)
         {
             return interchangeableGroups.Any(x => x.Equals(releaseGroup)) &&
                    interchangeableGroups.Any(lowerSubtitle.Contains);
