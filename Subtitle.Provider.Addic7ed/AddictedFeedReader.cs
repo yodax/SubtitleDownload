@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Subtitle.Provider.Addic7ed
 {
-    public class AddictedFeedReader
+    public static class AddictedFeedReader
     {
         public static IEnumerable<string> GetAllLinksFrom(string feedContent)
         {

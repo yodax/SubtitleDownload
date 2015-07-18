@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Subtitle.Common;
 
 namespace Subtitle.Provider.Addic7ed
@@ -21,14 +22,20 @@ namespace Subtitle.Provider.Addic7ed
             var linksFoundFromFeeds = new List<FoundLink>();
             foreach (var feedLink in feedLinks)
             {
-                linksFoundFromFeeds.AddRange(AddictedFeedReader
-                    .GetAllLinksFrom(_download.From(feedLink))
-                    .Where(l => l.Contains("/serie/"))
-                    .Select(s => new FoundLink
-                    {
-                        Link = s,
-                        FoundOn = DateTime.Now
-                    }));
+                try
+                {
+                    var feedContent = _download.From(feedLink);
+                    linksFoundFromFeeds.AddRange(AddictedFeedReader
+                        .GetAllLinksFrom(feedContent)
+                        .Where(l => l.Contains("/serie/"))
+                        .Select(s => new FoundLink
+                        {
+                            Link = s,
+                            FoundOn = DateTime.Now
+                        }));
+                }
+                catch (WebException){}
+                
             }
 
             AddFoundLinksToStore(linksFoundFromFeeds);
