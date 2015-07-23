@@ -30,7 +30,7 @@ namespace Subtitle.Downloader.Tests
         }
 
         [Test]
-        public void IfTheDownloadFailsTheExceptionShouldBeEaten()
+        public void IfTheDownloadFailsForOneFeedTheOtherFeedsShouldStillBeProcessed()
         {
             var foundLinks = new List<FoundLink>();
 
